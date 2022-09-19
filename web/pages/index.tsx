@@ -1,8 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { Component, ReactNode, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
+/*
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -68,5 +70,86 @@ const Home: NextPage = () => {
     </div>
   )
 }
-
 export default Home
+*/
+
+const IndexPage = () => {
+  const [my_num, set_my_num] = useState(10);
+  
+  const HandleClick = () => {
+    set_my_num(my_num+1);
+  };
+  
+  return(
+     <div>
+      <h1>Hello, Next.js</h1>
+      <div>
+        <img src="https://cdn2.thecatapi.com/images/bpc.jpg" />
+        <div>
+          <button onClick={HandleClick}>update the number</button>
+        </div>
+      </div>
+     </div>
+  );
+};
+
+class Todo extends Component {
+  constructor(props){
+    {/*super(props)はthis.propsを定義したりstateを使うための記述*/}
+    super(props);
+    this.state = {
+      todos: [],
+      name: String
+    };
+  }
+
+  componentDidMount(): void {
+    console.log("Hello")
+  }
+
+  componentWillUnmount(): void {
+    console.log("Bye")
+  }
+  
+  onInput = (e) =>{
+    this.setState({
+      name: e.target.value
+    });
+  }
+
+  addTodo = () => {
+    const { todos, name } = this.state;
+    this.setState({
+      todos: [...todos, name]
+    });
+  }
+
+  removeTodo = (index) =>{
+    const { todos, name } = this.state;
+    this.setState({
+      todos: [...todos.slice(0,index), ...todos.slice(index + 1)]
+    });
+  }
+
+  render(): ReactNode {
+    const { todos } = this.state;
+
+    return(
+      <div>
+        <input type="text" onInput={this.onInput} />
+        <button onClick={this.addTodo} >Register</button>
+        <ul>
+          {/*他に配列要素の識別子が存在しない時はindexを用いる*/}
+          {/*liはリスト要素の標示。pは普通の表示？*/}
+          {todos.map((todo, index) => <li key={index}>
+            {todo}
+            <button onClick={() => {this.removeTodo(index)}}>Remove</button>
+          </li>)}
+        </ul>
+      </div>
+
+    );
+  }
+}
+
+export default Todo;
