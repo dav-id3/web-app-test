@@ -94,7 +94,7 @@ const IndexPage = () => {
 };
 
 class Todo extends Component {
-  constructor(props){
+  constructor(props: any){
     {/*super(props)はthis.propsを定義したりstateを使うための記述*/}
     super(props);
     this.state = {
