@@ -1,6 +1,6 @@
 """model package"""
 from .base import Base
-from .data import Data
+from .data import DATA
 
 
-__all__ = ['Base', 'Data']
+__all__ = ['Base', 'DATA']

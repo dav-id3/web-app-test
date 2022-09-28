@@ -1,6 +1,6 @@
 from .base import Base
 
 
-class Data(Base):
+class DATA(Base):
     """Data entity"""
     __tablename__= 'my_data'
