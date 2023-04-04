@@ -1,0 +1,27 @@
+version: "3.0"
+
+services:
+  db:
+    container_name: "db"
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    ports:
+      - 3306:3306
+    tmpfs:
+      - /var/lib/mysql
+    environment:
+      APP_ENV: "local"
+      TZ: "Asia/Tokyo"
+    env_file:
+      - ./envfiles/.db
+    networks:
+      - appnet
+networks:
+  default:
+    external:
+      name: bridge
+  appnet:
+    name: appnet
+    driver: bridge
+    external: true
