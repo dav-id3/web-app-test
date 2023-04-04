@@ -1,6 +1,6 @@
 #!make
 
-cmd = current
+cmd=current
 
 PROJECT_NAME := web-test
 DOCKER_NETWORK := $(PROJECT_NAME)-network
@@ -12,14 +12,14 @@ WEB_PORT := 3000
 
 #containers name
 DATABASE_CONTAINER := $(PROJECT_NAME)-db
-ALEMBIC_CONTAINER := $(PROJECT_NAME)-alembic
+ALEMBIC_CONTAINER := $(PROJECT_NAME)-migraiton
 API_CONTAINER := $(PROJECT_NAME)-api
 OPENAPI_CONTAINER := $(PROJECT_NAME)-openapi
 WEB_CONTAINER := $(PROJECT_NAME)-web
 
 #path
-DATABASE_FOLDER := $(CURDIR)/database
-ALEMBIC_FOLDER := $(CURDIR)/alembic
+DATABASE_FOLDER := $(CURDIR)/db
+ALEMBIC_FOLDER := $(CURDIR)/migration/alembic
 API_FOLDER := $(CURDIR)/api
 OPENAPI_FOLDER := $(CURDIR)/openapi
 WEB_FOLDER := $(CURDIR)/web
@@ -48,13 +48,63 @@ db.start:
 		--env-file $(ENVFILE_FOLDER)/.db \
 		--net $(DOCKER_NETWORK) \
 		--name $(DATABASE_CONTAINER) \
-		--volume $(DATABASE_FOLDER)/data:var/lib/mysql:rw \
+		--volume $(DATABASE_FOLDER)/data:/var/lib/mysql:rw \
 		--publish $(MYSQL_PORT):3306 \
 		$(DATABASE_CONTAINER)
 
 .PHONY: db.exec
 db.exec:
 	@docker exec -it $(DATABASE_CONTAINER) /bin/bash
+
+## Migration for database
+.PHONY: migration.build
+migration.build:
+	@docker build \
+		-f $(ALEMBIC_FOLDER)/Dockerfile \
+		-t $(ALEMBIC_CONTAINER) ${ALEMBIC_FOLDER}
+
+.PHONY: migration.run
+migration.run:
+	@docker run --rm -it \
+		--env-file $(ENVFILE_FOLDER)/.alembic \
+		--net $(DOCKER_NETWORK) \
+		--name $(ALEMBIC_CONTAINER) \
+		--volume ${ALEMBIC_FOLDER}:/workspace/alembic:rw \
+		$(ALEMBIC_CONTAINER) alembic ${cmd}
+
+.PHONY: migration.test
+migration.test:
+	@docker run --rm \
+		--volume ${ALEMBIC_FOLDER}:/workspace/alembic:ro
+		$(ALEMBIC_CONTAINER) isort alembic --check-only --diff
+	@docker run --rm 
+		--volume ${ALEMBIC_FOLDER}:/workspace/alembic:ro
+		$(ALEMBIC_CONTAINER) black alembic --check --diff
+		
+## api
+.PHONY: api.build
+api.build:
+	@docker build \
+		-f $(API_FOLDER)/Dockerfile \
+		-t $(API_CONTAINER) ./api
+
+.PHONY: api.up
+api.up:
+	@docker run --rm -it \
+		--env-file $(ENVFILE_FOLDER)/.api \
+		--net $(DOCKER_NETWORK) \
+		--name $(API_CONTAINER) \
+		--publish ${API_PORT}:8000 \
+		$(API_CONTAINER)
+
+.PHONY: api.test
+api.test:
+	@docker run --rm ${API_CONTAINER} isort src --check-only --diff
+	@docker run --rm ${API_CONTAINER} black src --check --diff
+	@docker run --rm ${API_CONTAINER} pylint src
+	@docker run --rm ${API_CONTAINER} mypy src
+	@docker run --rm ${API_CONTAINER} pytest -s -vv
+
 
 ##NEXT JS (REACT)
 .PHONY: web.build

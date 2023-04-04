@@ -1,0 +1,43 @@
+[tool.isort]
+include_training_comma = true
+line_length = 120
+lines_after_imports = 2
+multi_line_outputs = 3
+profile = "black"
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+target-version = ['py311']
+exclude = '''
+(
+    .mypy_cache
+    | .pytest_cache
+    | .venv
+)
+'''
+
+[tool.pylint.master]
+extension-pkg-allow-list = [
+    "pydantic.error_wrappers",
+]
+
+[tool.pylint.format]
+max-line-length = 128
+max-branche = 18
+
+[tool.mypy]
+python_version = 3.11
+warn_return_any = true
+
+[[tool.mypy.overrides]]
+module = [
+    "pandas",
+]
+ignore_missing_imports = true
+
+[tool.flake8]
+ignore = "E203,W503,W504"
+max-line-length = 150
+exclude = "tests/*"
+max-complexity = 10
