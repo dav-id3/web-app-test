@@ -1,10 +1,12 @@
 """schema for mysql"""
-from datetime import datetime
 from pydantic import BaseModel, Field
 
-class InsertionError(Exception):
+
+class InsertionDBError(Exception):
     """Cannnot insert data into mysql"""
+
 
 class testData(BaseModel):
     """test data"""
-    id: int =Field(..., description='unique id')
+
+    name: str = Field(..., description="name")

@@ -26,6 +26,7 @@ target_metadata = None
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+
 def build_url() -> str:
     """
     build Python MySQL driver specific database url string
@@ -36,23 +37,22 @@ def build_url() -> str:
         >>> build_url()
         "mysql+mysqldb://username:password@hostname:port?charset=utf8"
     """
-    hostname = os.environ.get('MYSQL_HOST')
-    username = os.environ.get('MYSQL_USER')
-    password = os.environ.get('MYSQL_PASSWORD')
-    database = os.environ.get('MYSQL_DATABASE')
-    port = os.environ.get('MYSQL_PORT')
+    hostname = os.environ.get("MYSQL_HOST")
+    username = os.environ.get("MYSQL_USER")
+    password = os.environ.get("MYSQL_PASSWORD")
+    database = os.environ.get("MYSQL_DATABASE")
+    port = os.environ.get("MYSQL_PORT")
 
-    protocol = 'mysql+mysqldb'
-    identity = f'{username}:{password}'
-    host = f'{hostname}:{port}'
-    
-    pathname =f'/{database}'
-    qs = '?charset=utf8'
-    
-    origin = f'{protocol}://{identity}@{host}'
+    protocol = "mysql+mysqldb"
+    identity = f"{username}:{password}"
+    host = f"{hostname}:{port}"
+
+    pathname = f"/{database}"
+    qs = "?charset=utf8"
+
+    origin = f"{protocol}://{identity}@{host}"
 
     return origin + pathname + qs
-
 
 
 def run_migrations_offline() -> None:
@@ -87,7 +87,7 @@ def run_migrations_online() -> None:
 
     """
     ini_section = config.get_section(config.config_ini_section)
-    ini_section['sqlalchemy.url'] = build_url()
+    ini_section["sqlalchemy.url"] = build_url()
 
     connectable = engine_from_config(
         ini_section,
@@ -96,11 +96,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            compare_type=True,
-            connection=connection,
-            target_metadata=target_metadata
-        )
+        context.configure(compare_type=True, connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

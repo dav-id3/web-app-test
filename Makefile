@@ -12,14 +12,14 @@ WEB_PORT := 3000
 
 #containers name
 DATABASE_CONTAINER := $(PROJECT_NAME)-db
-ALEMBIC_CONTAINER := $(PROJECT_NAME)-migraiton
+MIGRATION_CONTAINER := $(PROJECT_NAME)-migraiton
 API_CONTAINER := $(PROJECT_NAME)-api
 OPENAPI_CONTAINER := $(PROJECT_NAME)-openapi
 WEB_CONTAINER := $(PROJECT_NAME)-web
 
 #path
 DATABASE_FOLDER := $(CURDIR)/db
-ALEMBIC_FOLDER := $(CURDIR)/migration/alembic
+MIGRATION_FOLDER := $(CURDIR)/migration
 API_FOLDER := $(CURDIR)/api
 OPENAPI_FOLDER := $(CURDIR)/openapi
 WEB_FOLDER := $(CURDIR)/web
@@ -60,26 +60,26 @@ db.exec:
 .PHONY: migration.build
 migration.build:
 	@docker build \
-		-f $(ALEMBIC_FOLDER)/Dockerfile \
-		-t $(ALEMBIC_CONTAINER) ${ALEMBIC_FOLDER}
+		-f $(MIGRATION_FOLDER)/Dockerfile \
+		-t $(MIGRATION_CONTAINER) ${MIGRATION_FOLDER}
 
 .PHONY: migration.run
 migration.run:
 	@docker run --rm -it \
 		--env-file $(ENVFILE_FOLDER)/.alembic \
 		--net $(DOCKER_NETWORK) \
-		--name $(ALEMBIC_CONTAINER) \
-		--volume ${ALEMBIC_FOLDER}:/workspace/alembic:rw \
-		$(ALEMBIC_CONTAINER) alembic ${cmd}
+		--name $(MIGRATION_CONTAINER) \
+		--volume ${MIGRATION_FOLDER}/alembic:/workspace/alembic:rw \
+		$(MIGRATION_CONTAINER) alembic ${cmd}
 
 .PHONY: migration.test
 migration.test:
 	@docker run --rm \
-		--volume ${ALEMBIC_FOLDER}:/workspace/alembic:ro
-		$(ALEMBIC_CONTAINER) isort alembic --check-only --diff
+		--volume ${MIGRATION_FOLDER}/alembic:/workspace/alembic:ro
+		$(MIGRATION_CONTAINER) isort alembic --check-only --diff
 	@docker run --rm 
-		--volume ${ALEMBIC_FOLDER}:/workspace/alembic:ro
-		$(ALEMBIC_CONTAINER) black alembic --check --diff
+		--volume ${MIGRATION_FOLDER}/alembic:/workspace/alembic:ro
+		$(MIGRATION_CONTAINER) black alembic --check --diff
 		
 ## api
 .PHONY: api.build

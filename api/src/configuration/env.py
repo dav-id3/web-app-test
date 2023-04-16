@@ -13,6 +13,7 @@ class ENV:
     MYSQL_PASSWORD: Optional[str]
     ALLOW_ORIGINS: str
 
+
 def new_env() -> ENV:
     """
     dependemcy injection for env
@@ -21,10 +22,10 @@ def new_env() -> ENV:
         ENV
     """
     return ENV(
-        MYSQL_HOST=os.environ.get('MYSQL_HOST'),
-        MYSQL_PORT=os.environ.get('MYSQL_PORT'),
-        MYSQL_DATABASE=os.environ.get('MYSQL_DATABASE'),
-        MYSQL_USER=os.environ.get('MYSQL_USER'),
-        MYSQL_PASSWORD=os.environ.get('MYSQL_PASSWORD'),
-        ALLOW_ORIGINS=os.environ.get('ALLOW_ORIGINS', '*'),
+        MYSQL_HOST=os.environ.get("MYSQL_HOST"),
+        MYSQL_PORT=os.environ.get("MYSQL_PORT"),
+        MYSQL_DATABASE=os.environ.get("MYSQL_DATABASE"),
+        MYSQL_USER=os.environ.get("MYSQL_USER"),
+        MYSQL_PASSWORD=os.environ.get("MYSQL_PASSWORD"),
+        ALLOW_ORIGINS=os.environ.get("ALLOW_ORIGINS", "*"),
     )
