@@ -1,6 +1,7 @@
-from .base import BaseMySQL
+from .base import BaseMySQL, Base
 
 
-class Data(BaseMySQL):
+class Data(BaseMySQL, Base):
     """Data entity"""
-    __tablename__= 'data'
+
+    __tablename__ = "data"

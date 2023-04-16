@@ -15,9 +15,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY ../Pipfile ../Pipfile.lock ./
+COPY Pipfile Pipfile.lock ./
 
-RUN apk add gcc python3-dev libc-dev mariadb-dev && \
+RUN apt-get -y install gcc python3-dev libmariadb-dev && \
     pip install --upgrade pip && \
     pip install pipenv --no-cache-dir && \
     export PIPENV_INSTALL_TIMEOUT=9999 && \
@@ -28,4 +28,4 @@ COPY gunicorn.cfg.py pyproject.toml ./
 
 COPY src/ src/
 
-CMD ["guvicorn", "--config-gunicorn.cfg.py","src.main:app"]
+CMD ["gunicorn", "--config","gunicorn.cfg.py","src.main:app"]
