@@ -106,6 +106,34 @@ api.test:
 	@docker run --rm ${API_CONTAINER} pytest -s -vv
 
 
+## OpenAPI
+.PHONY: openapi.build
+openapi.build:
+	@docker build \
+		-f $(OPENAPI_FOLDER)/Dockerfile \
+		-t $(OPENAPI_CONTAINER) ./openapi
+
+.PHONY: openapi.update
+openapi.update:
+	@docker run --rm \
+		--name $(OPENAPI_CONTAINER) \
+		--volume $(OPENAPI_COMPILED_FILE):/usr/src/app/openapi/compiled.yaml \
+		$(OPENAPI_CONTAINER)
+
+.PHONY: openapi.up
+openapi.up:
+	@docker-compose -f openapi/docker-compose.yml up
+
+.PHONY: openapi.generate
+openapi.generate:
+	@docker run --rm \
+		-v $(OPENAPI_FOLDER):/local \
+		openapitools/openapi-generator-cli:v5.3.0 \
+		generate \
+		-i /local/compiled.yaml \
+		-g typescript-axios \
+		-o /local/api
+
 ##NEXT JS (REACT)
 .PHONY: web.build
 web.build:

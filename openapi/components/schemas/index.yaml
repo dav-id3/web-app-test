@@ -1,0 +1,3 @@
+# test
+test.postDataRequest:
+  $ref: ./test/postDataRequest.yaml

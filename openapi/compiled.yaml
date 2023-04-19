@@ -1,0 +1,56 @@
+openapi: 3.0.2
+info:
+  version: 0.0.1
+  title: Web app test api
+paths:
+  /base:
+    post:
+      tags:
+        - test
+      summary: post new data
+      description: post new data
+      requestBody:
+        description: array of new data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/test.postDataRequest'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    test.postDataRequest:
+      type: object
+      properties:
+        req:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+            required:
+              - id
+              - name
+      required:
+        - req
+      example:
+        - id: 1
+          name: Tanaka
+        - id: 2
+          name: Nakano
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionId
+servers:
+  - url: '{server}'
+    variables:
+      server:
+        default: 'http://localhost:8080'
+

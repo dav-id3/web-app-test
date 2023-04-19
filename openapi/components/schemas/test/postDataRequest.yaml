@@ -1,0 +1,22 @@
+type: object
+properties:
+  req:
+    type: array
+    items:
+      type: object
+      properties:
+        id: 
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+required:
+  - req
+
+example:
+  - id: 1
+    name: 'Tanaka'
+  - id: 2
+    name: 'Nakano'
