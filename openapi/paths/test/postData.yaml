@@ -1,0 +1,17 @@
+post:
+  tags:
+   - test
+  summary: post new data
+  description: post new data
+
+  requestBody:
+    description: array of new data
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/test.postDataRequest'
+  
+  responses:
+    200:
+      description: OK
