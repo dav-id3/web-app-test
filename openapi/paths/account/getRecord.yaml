@@ -1,0 +1,13 @@
+get:
+  tags:
+    - account
+  summary: get account record
+  description: get account record
+
+  responses:
+    200:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/account.getRecordResponse"

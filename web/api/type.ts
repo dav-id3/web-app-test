@@ -1,7 +1,3 @@
-import {
-    TestPostDataRequest,
-} from "./generated/api";
+import { AccountGetRecordResponseResponse } from "../api/generated/api";
 
-export type {
-    TestPostDataRequest,
-};
+export type { AccountGetRecordResponseResponse };

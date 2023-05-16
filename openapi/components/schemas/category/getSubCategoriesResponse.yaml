@@ -1,0 +1,29 @@
+type: object
+properties:
+  categories:
+    type: array
+    items:
+      type: object
+      properties:
+        category_id:
+          type: integer
+        category:
+          type: string
+        subcategories:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              subcategory:
+                type: string
+            required:
+              - id
+              - subcategory
+      required:
+        - category_id
+        - category
+        - subcategories
+required:
+  - categories

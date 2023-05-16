@@ -1,0 +1,53 @@
+type: object
+properties:
+  response:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        sub_category:
+          type: string
+        amount:
+          type: integer
+        description:
+          type: string
+        is_spending:
+          type: boolean
+        date:
+          type: string
+          format: date
+      required:
+        - id
+        - name
+        - category
+        - sub_category
+        - amount
+        - description
+        - is_spending
+        - date
+required:
+  - response
+example:
+  response:
+    - id: 1
+      name: "book"
+      category: "book"
+      sub_category: "book"
+      amount: 1000
+      description: "book"
+      is_spending: true
+      date: "2020-01-01"
+    - id: 2
+      name: "fish"
+      category: "food"
+      sub_category: "fish"
+      amount: 1000
+      description: "fish"
+      is_spending: true
+      date: "2020-01-01"

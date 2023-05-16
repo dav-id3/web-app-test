@@ -24,6 +24,274 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface AccountGetRecordResponse
+ */
+export interface AccountGetRecordResponse {
+    /**
+     * 
+     * @type {Array<AccountGetRecordResponseResponse>}
+     * @memberof AccountGetRecordResponse
+     */
+    'response': Array<AccountGetRecordResponseResponse>;
+}
+/**
+ * 
+ * @export
+ * @interface AccountGetRecordResponseResponse
+ */
+export interface AccountGetRecordResponseResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'category': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'sub_category': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'amount': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'description': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'is_spending': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'date': string;
+}
+/**
+ * 
+ * @export
+ * @interface AccountUpdateRecordRequest
+ */
+export interface AccountUpdateRecordRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'category': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'sub_category': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'amount': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'description': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'is_spending': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'date': string;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryGetSubCategoriesResponse
+ */
+export interface CategoryGetSubCategoriesResponse {
+    /**
+     * 
+     * @type {Array<CategoryGetSubCategoriesResponseCategories>}
+     * @memberof CategoryGetSubCategoriesResponse
+     */
+    'categories': Array<CategoryGetSubCategoriesResponseCategories>;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryGetSubCategoriesResponseCategories
+ */
+export interface CategoryGetSubCategoriesResponseCategories {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryGetSubCategoriesResponseCategories
+     */
+    'category_id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryGetSubCategoriesResponseCategories
+     */
+    'category': string;
+    /**
+     * 
+     * @type {Array<CategoryGetSubCategoriesResponseSubcategories>}
+     * @memberof CategoryGetSubCategoriesResponseCategories
+     */
+    'subcategories': Array<CategoryGetSubCategoriesResponseSubcategories>;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryGetSubCategoriesResponseSubcategories
+ */
+export interface CategoryGetSubCategoriesResponseSubcategories {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryGetSubCategoriesResponseSubcategories
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryGetSubCategoriesResponseSubcategories
+     */
+    'subcategory': string;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryPostNewCategoryRequest
+ */
+export interface CategoryPostNewCategoryRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryPostNewCategoryRequest
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryPostNewCategoryRequest
+     */
+    'category': string;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryPostNewSubCategoryRequest
+ */
+export interface CategoryPostNewSubCategoryRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryPostNewSubCategoryRequest
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryPostNewSubCategoryRequest
+     */
+    'subcategory': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryPostNewSubCategoryRequest
+     */
+    'cotegory_id'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryUpdateCategoryRequest
+ */
+export interface CategoryUpdateCategoryRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryUpdateCategoryRequest
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryUpdateCategoryRequest
+     */
+    'category': string;
+}
+/**
+ * 
+ * @export
+ * @interface CategoryUpdateSubCategoryRequest
+ */
+export interface CategoryUpdateSubCategoryRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryUpdateSubCategoryRequest
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryUpdateSubCategoryRequest
+     */
+    'sub_category': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryUpdateSubCategoryRequest
+     */
+    'category_id': number;
+}
+/**
+ * 
+ * @export
  * @interface TestPostDataRequest
  */
 export interface TestPostDataRequest {
@@ -53,6 +321,683 @@ export interface TestPostDataRequestReq {
      */
     'name': string;
 }
+
+/**
+ * AccountApi - axios parameter creator
+ * @export
+ */
+export const AccountApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * get account record
+         * @summary get account record
+         * @param {string} deletedId deleted account id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountDeleteDeletedIdDelete: async (deletedId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deletedId' is not null or undefined
+            assertParamExists('accountDeleteDeletedIdDelete', 'deletedId', deletedId)
+            const localVarPath = `/account/delete/{deleted_id}`
+                .replace(`{${"deleted_id"}}`, encodeURIComponent(String(deletedId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * get account record
+         * @summary get account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountGetGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/account/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * post new account record
+         * @summary post new account record
+         * @param {Array<object>} requestBody array of new account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountPostPost: async (requestBody: Array<object>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'requestBody' is not null or undefined
+            assertParamExists('accountPostPost', 'requestBody', requestBody)
+            const localVarPath = `/account/post`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * update account record
+         * @summary update account record
+         * @param {AccountUpdateRecordRequest} accountUpdateRecordRequest updated account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountUpdatePut: async (accountUpdateRecordRequest: AccountUpdateRecordRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'accountUpdateRecordRequest' is not null or undefined
+            assertParamExists('accountUpdatePut', 'accountUpdateRecordRequest', accountUpdateRecordRequest)
+            const localVarPath = `/account/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(accountUpdateRecordRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AccountApi - functional programming interface
+ * @export
+ */
+export const AccountApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AccountApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * get account record
+         * @summary get account record
+         * @param {string} deletedId deleted account id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountDeleteDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountDeleteDeletedIdDelete(deletedId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * get account record
+         * @summary get account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountGetGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AccountGetRecordResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountGetGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * post new account record
+         * @summary post new account record
+         * @param {Array<object>} requestBody array of new account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountPostPost(requestBody: Array<object>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountPostPost(requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * update account record
+         * @summary update account record
+         * @param {AccountUpdateRecordRequest} accountUpdateRecordRequest updated account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountUpdatePut(accountUpdateRecordRequest: AccountUpdateRecordRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountUpdatePut(accountUpdateRecordRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * AccountApi - factory interface
+ * @export
+ */
+export const AccountApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AccountApiFp(configuration)
+    return {
+        /**
+         * get account record
+         * @summary get account record
+         * @param {string} deletedId deleted account id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountDeleteDeletedIdDelete(deletedId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.accountDeleteDeletedIdDelete(deletedId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * get account record
+         * @summary get account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountGetGet(options?: any): AxiosPromise<AccountGetRecordResponse> {
+            return localVarFp.accountGetGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * post new account record
+         * @summary post new account record
+         * @param {Array<object>} requestBody array of new account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountPostPost(requestBody: Array<object>, options?: any): AxiosPromise<void> {
+            return localVarFp.accountPostPost(requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * update account record
+         * @summary update account record
+         * @param {AccountUpdateRecordRequest} accountUpdateRecordRequest updated account record
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountUpdatePut(accountUpdateRecordRequest: AccountUpdateRecordRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.accountUpdatePut(accountUpdateRecordRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AccountApi - object-oriented interface
+ * @export
+ * @class AccountApi
+ * @extends {BaseAPI}
+ */
+export class AccountApi extends BaseAPI {
+    /**
+     * get account record
+     * @summary get account record
+     * @param {string} deletedId deleted account id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountApi
+     */
+    public accountDeleteDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig) {
+        return AccountApiFp(this.configuration).accountDeleteDeletedIdDelete(deletedId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * get account record
+     * @summary get account record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountApi
+     */
+    public accountGetGet(options?: AxiosRequestConfig) {
+        return AccountApiFp(this.configuration).accountGetGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * post new account record
+     * @summary post new account record
+     * @param {Array<object>} requestBody array of new account record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountApi
+     */
+    public accountPostPost(requestBody: Array<object>, options?: AxiosRequestConfig) {
+        return AccountApiFp(this.configuration).accountPostPost(requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * update account record
+     * @summary update account record
+     * @param {AccountUpdateRecordRequest} accountUpdateRecordRequest updated account record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountApi
+     */
+    public accountUpdatePut(accountUpdateRecordRequest: AccountUpdateRecordRequest, options?: AxiosRequestConfig) {
+        return AccountApiFp(this.configuration).accountUpdatePut(accountUpdateRecordRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * CategoryApi - axios parameter creator
+ * @export
+ */
+export const CategoryApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * get all subcategory name and id with their category name and id
+         * @summary get all subcategory with their category name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryGetGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/category/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * post new category
+         * @summary post new category
+         * @param {CategoryPostNewCategoryRequest} categoryPostNewCategoryRequest a new category
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryPostCategoryPost: async (categoryPostNewCategoryRequest: CategoryPostNewCategoryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'categoryPostNewCategoryRequest' is not null or undefined
+            assertParamExists('categoryPostCategoryPost', 'categoryPostNewCategoryRequest', categoryPostNewCategoryRequest)
+            const localVarPath = `/category/post/category`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(categoryPostNewCategoryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * post new sub category
+         * @summary post new sub category
+         * @param {CategoryPostNewSubCategoryRequest} categoryPostNewSubCategoryRequest a new sub category
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryPostSubcategoryPost: async (categoryPostNewSubCategoryRequest: CategoryPostNewSubCategoryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'categoryPostNewSubCategoryRequest' is not null or undefined
+            assertParamExists('categoryPostSubcategoryPost', 'categoryPostNewSubCategoryRequest', categoryPostNewSubCategoryRequest)
+            const localVarPath = `/category/post/subcategory`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(categoryPostNewSubCategoryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * update category name
+         * @summary update category name
+         * @param {CategoryUpdateCategoryRequest} categoryUpdateCategoryRequest category id and new category name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryUpdateCategoryPut: async (categoryUpdateCategoryRequest: CategoryUpdateCategoryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'categoryUpdateCategoryRequest' is not null or undefined
+            assertParamExists('categoryUpdateCategoryPut', 'categoryUpdateCategoryRequest', categoryUpdateCategoryRequest)
+            const localVarPath = `/category/update/category`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(categoryUpdateCategoryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * update subcategory name
+         * @summary update subcategory name
+         * @param {CategoryUpdateSubCategoryRequest} categoryUpdateSubCategoryRequest subcategory id and new subcategory name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryUpdateSubcategoryPut: async (categoryUpdateSubCategoryRequest: CategoryUpdateSubCategoryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'categoryUpdateSubCategoryRequest' is not null or undefined
+            assertParamExists('categoryUpdateSubcategoryPut', 'categoryUpdateSubCategoryRequest', categoryUpdateSubCategoryRequest)
+            const localVarPath = `/category/update/subcategory`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(categoryUpdateSubCategoryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CategoryApi - functional programming interface
+ * @export
+ */
+export const CategoryApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CategoryApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * get all subcategory name and id with their category name and id
+         * @summary get all subcategory with their category name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryGetGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryGetSubCategoriesResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryGetGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * post new category
+         * @summary post new category
+         * @param {CategoryPostNewCategoryRequest} categoryPostNewCategoryRequest a new category
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryPostCategoryPost(categoryPostNewCategoryRequest: CategoryPostNewCategoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryPostCategoryPost(categoryPostNewCategoryRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * post new sub category
+         * @summary post new sub category
+         * @param {CategoryPostNewSubCategoryRequest} categoryPostNewSubCategoryRequest a new sub category
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryPostSubcategoryPost(categoryPostNewSubCategoryRequest: CategoryPostNewSubCategoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryPostSubcategoryPost(categoryPostNewSubCategoryRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * update category name
+         * @summary update category name
+         * @param {CategoryUpdateCategoryRequest} categoryUpdateCategoryRequest category id and new category name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryUpdateCategoryPut(categoryUpdateCategoryRequest: CategoryUpdateCategoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryUpdateCategoryPut(categoryUpdateCategoryRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * update subcategory name
+         * @summary update subcategory name
+         * @param {CategoryUpdateSubCategoryRequest} categoryUpdateSubCategoryRequest subcategory id and new subcategory name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryUpdateSubcategoryPut(categoryUpdateSubCategoryRequest: CategoryUpdateSubCategoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryUpdateSubcategoryPut(categoryUpdateSubCategoryRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * CategoryApi - factory interface
+ * @export
+ */
+export const CategoryApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CategoryApiFp(configuration)
+    return {
+        /**
+         * get all subcategory name and id with their category name and id
+         * @summary get all subcategory with their category name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryGetGet(options?: any): AxiosPromise<CategoryGetSubCategoriesResponse> {
+            return localVarFp.categoryGetGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * post new category
+         * @summary post new category
+         * @param {CategoryPostNewCategoryRequest} categoryPostNewCategoryRequest a new category
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryPostCategoryPost(categoryPostNewCategoryRequest: CategoryPostNewCategoryRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.categoryPostCategoryPost(categoryPostNewCategoryRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * post new sub category
+         * @summary post new sub category
+         * @param {CategoryPostNewSubCategoryRequest} categoryPostNewSubCategoryRequest a new sub category
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryPostSubcategoryPost(categoryPostNewSubCategoryRequest: CategoryPostNewSubCategoryRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.categoryPostSubcategoryPost(categoryPostNewSubCategoryRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * update category name
+         * @summary update category name
+         * @param {CategoryUpdateCategoryRequest} categoryUpdateCategoryRequest category id and new category name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryUpdateCategoryPut(categoryUpdateCategoryRequest: CategoryUpdateCategoryRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.categoryUpdateCategoryPut(categoryUpdateCategoryRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * update subcategory name
+         * @summary update subcategory name
+         * @param {CategoryUpdateSubCategoryRequest} categoryUpdateSubCategoryRequest subcategory id and new subcategory name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryUpdateSubcategoryPut(categoryUpdateSubCategoryRequest: CategoryUpdateSubCategoryRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.categoryUpdateSubcategoryPut(categoryUpdateSubCategoryRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CategoryApi - object-oriented interface
+ * @export
+ * @class CategoryApi
+ * @extends {BaseAPI}
+ */
+export class CategoryApi extends BaseAPI {
+    /**
+     * get all subcategory name and id with their category name and id
+     * @summary get all subcategory with their category name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryGetGet(options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryGetGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * post new category
+     * @summary post new category
+     * @param {CategoryPostNewCategoryRequest} categoryPostNewCategoryRequest a new category
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryPostCategoryPost(categoryPostNewCategoryRequest: CategoryPostNewCategoryRequest, options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryPostCategoryPost(categoryPostNewCategoryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * post new sub category
+     * @summary post new sub category
+     * @param {CategoryPostNewSubCategoryRequest} categoryPostNewSubCategoryRequest a new sub category
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryPostSubcategoryPost(categoryPostNewSubCategoryRequest: CategoryPostNewSubCategoryRequest, options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryPostSubcategoryPost(categoryPostNewSubCategoryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * update category name
+     * @summary update category name
+     * @param {CategoryUpdateCategoryRequest} categoryUpdateCategoryRequest category id and new category name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryUpdateCategoryPut(categoryUpdateCategoryRequest: CategoryUpdateCategoryRequest, options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryUpdateCategoryPut(categoryUpdateCategoryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * update subcategory name
+     * @summary update subcategory name
+     * @param {CategoryUpdateSubCategoryRequest} categoryUpdateSubCategoryRequest subcategory id and new subcategory name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryUpdateSubcategoryPut(categoryUpdateSubCategoryRequest: CategoryUpdateSubCategoryRequest, options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryUpdateSubcategoryPut(categoryUpdateSubCategoryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
 
 /**
  * TestApi - axios parameter creator

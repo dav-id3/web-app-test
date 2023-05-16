@@ -1,19 +1,17 @@
-// donfigured axios client not to throw error even status code indicates failures
+// configures axios client not to throw error when status code indicate failure
 import axios from "axios";
+import { config } from "process";
 
-const client = axios.create(
-    {
-        validateStatus: (status: number) => true,
-        withCredentials: true,
-        timeout: Number(process.env.TIMEOUT),
-    }
+const client = axios.create({
+  validateStatus: (status: number) => true,
+  withCredentials: true,
+  timeout: Number(process.env.TIME_OUT),
+});
+
+client.interceptors.response.use((config) => config);
+client.interceptors.request.use(
+  (response) => response,
+  (err) => err.response
 );
 
-client.interceptors.request.use(config => config);
-
-client.interceptors.response.use(
-    response => response,
-    err => err.response
-);
-
-export default client
+export default client;

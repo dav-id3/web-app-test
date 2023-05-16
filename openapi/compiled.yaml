@@ -19,6 +19,144 @@ paths:
       responses:
         '200':
           description: OK
+  /account/get:
+    get:
+      tags:
+        - account
+      summary: get account record
+      description: get account record
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account.getRecordResponse'
+  /account/post:
+    post:
+      tags:
+        - account
+      summary: post new account record
+      description: post new account record
+      requestBody:
+        description: array of new account record
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/account.postRecordRequest'
+      responses:
+        '201':
+          description: Created
+  /account/update:
+    put:
+      tags:
+        - account
+      summary: update account record
+      description: update account record
+      requestBody:
+        description: updated account record
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/account.updateRecordRequest'
+      responses:
+        '202':
+          description: Accepted
+  '/account/delete/{deleted_id}':
+    delete:
+      tags:
+        - account
+      summary: get account record
+      description: get account record
+      parameters:
+        - in: path
+          name: deleted_id
+          required: true
+          schema:
+            type: string
+          description: deleted account id
+      responses:
+        '204':
+          description: OK
+  /category/get:
+    get:
+      tags:
+        - category
+      summary: get all subcategory with their category name
+      description: get all subcategory name and id with their category name and id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/category.getSubCategoriesResponse'
+  /category/post/category:
+    post:
+      tags:
+        - category
+      summary: post new category
+      description: post new category
+      requestBody:
+        description: a new category
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category.postNewCategoryRequest'
+      responses:
+        '201':
+          description: Created
+  /category/post/subcategory:
+    post:
+      tags:
+        - category
+      summary: post new sub category
+      description: post new sub category
+      requestBody:
+        description: a new sub category
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category.postNewSubCategoryRequest'
+      responses:
+        '201':
+          description: Created
+  /category/update/category:
+    put:
+      tags:
+        - category
+      summary: update category name
+      description: update category name
+      requestBody:
+        description: category id and new category name
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category.updateCategoryRequest'
+      responses:
+        '202':
+          description: Accepted
+  /category/update/subcategory:
+    put:
+      tags:
+        - category
+      summary: update subcategory name
+      description: update subcategory name
+      requestBody:
+        description: subcategory id and new subcategory name
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category.updateSubCategoryRequest'
+      responses:
+        '202':
+          description: Accepted
 components:
   schemas:
     test.postDataRequest:
@@ -43,6 +181,193 @@ components:
           name: Tanaka
         - id: 2
           name: Nakano
+    account.getRecordResponse:
+      type: object
+      properties:
+        response:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              category:
+                type: string
+              sub_category:
+                type: string
+              amount:
+                type: integer
+              description:
+                type: string
+              is_spending:
+                type: boolean
+              date:
+                type: string
+                format: date
+            required:
+              - id
+              - name
+              - category
+              - sub_category
+              - amount
+              - description
+              - is_spending
+              - date
+      required:
+        - response
+      example:
+        response:
+          - id: 1
+            name: book
+            category: book
+            sub_category: book
+            amount: 1000
+            description: book
+            is_spending: true
+            date: '2020-01-01'
+          - id: 2
+            name: fish
+            category: food
+            sub_category: fish
+            amount: 1000
+            description: fish
+            is_spending: true
+            date: '2020-01-01'
+    account.postRecordRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          category:
+            type: string
+          sub_category:
+            type: string
+          amount:
+            type: integer
+          description:
+            type: string
+          is_spending:
+            type: boolean
+          date:
+            type: string
+            format: date
+        required:
+          - name
+          - category
+          - sub_category
+          - amount
+          - description
+          - is_spending
+          - date
+    account.updateRecordRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        sub_category:
+          type: string
+        amount:
+          type: integer
+        description:
+          type: string
+        is_spending:
+          type: boolean
+        date:
+          type: string
+          format: date
+      required:
+        - id
+        - name
+        - category
+        - sub_category
+        - amount
+        - description
+        - is_spending
+        - date
+    category.getSubCategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              category_id:
+                type: integer
+              category:
+                type: string
+              subcategories:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    subcategory:
+                      type: string
+                  required:
+                    - id
+                    - subcategory
+            required:
+              - category_id
+              - category
+              - subcategories
+      required:
+        - categories
+    category.postNewCategoryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+      required:
+        - id
+        - category
+    category.postNewSubCategoryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        subcategory:
+          type: string
+        cotegory_id:
+          type: integer
+      required:
+        - id
+        - subcategory
+        - category_id
+    category.updateSubCategoryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        sub_category:
+          type: string
+        category_id:
+          type: integer
+      required:
+        - id
+        - sub_category
+        - category_id
+    category.updateCategoryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+      required:
+        - id
+        - category
   securitySchemes:
     cookieAuth:
       type: apiKey
@@ -52,5 +377,5 @@ servers:
   - url: '{server}'
     variables:
       server:
-        default: 'http://localhost:8080'
+        default: 'http://localhost:8000'
 

@@ -1,5 +1,4 @@
-import { Head } from "./Head"
+import { Head } from "./Head";
+import { MyDatePicker } from "./MyDatePicker";
 
-export {
-    Head,
-}
+export { Head, MyDatePicker };

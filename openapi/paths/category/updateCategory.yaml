@@ -1,0 +1,17 @@
+put:
+  tags:
+    - category
+  summary: update category name
+  description: update category name
+
+  requestBody:
+    description: category id and new category name
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/category.updateCategoryRequest"
+
+  responses:
+    202:
+      description: Accepted

@@ -1,4 +1,4 @@
-openapi: '3.0.2'
+openapi: "3.0.2"
 info:
   version: 0.0.1
   title: Web app test api
@@ -16,7 +16,7 @@ components:
       name: sessionId
 
 servers:
-  - url: '{server}'
+  - url: "{server}"
     variables:
       server:
-        default: http://localhost:8080
+        default: http://localhost:8000
