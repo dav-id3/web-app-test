@@ -1,0 +1,27 @@
+type: array
+items:
+  type: object
+  properties:
+    name:
+      type: string
+    category:
+      type: string
+    sub_category:
+      type: string
+    amount:
+      type: integer
+    description:
+      type: string
+    is_spending:
+      type: boolean
+    date:
+      type: string
+      format: date
+  required:
+    - name
+    - category
+    - sub_category
+    - amount
+    - description
+    - is_spending
+    - date

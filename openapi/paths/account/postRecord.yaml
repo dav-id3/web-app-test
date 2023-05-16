@@ -1,0 +1,17 @@
+post:
+  tags:
+    - account
+  summary: post new account record
+  description: post new account record
+
+  requestBody:
+    description: array of new account record
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/account.postRecordRequest"
+
+  responses:
+    201:
+      description: Created

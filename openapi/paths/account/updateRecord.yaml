@@ -1,0 +1,17 @@
+put:
+  tags:
+    - account
+  summary: update account record
+  description: update account record
+
+  requestBody:
+    description: updated account record
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/account.updateRecordRequest"
+
+  responses:
+    202:
+      description: Accepted

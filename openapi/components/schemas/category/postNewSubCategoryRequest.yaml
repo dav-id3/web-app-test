@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: integer
+  subcategory:
+    type: string
+  cotegory_id:
+    type: integer
+required:
+  - id
+  - subcategory
+  - category_id

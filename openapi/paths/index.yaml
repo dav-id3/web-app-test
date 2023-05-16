@@ -1,3 +1,25 @@
 # test
 /base:
   $ref: ./test/postData.yaml
+
+# create/post/update account records
+/account/get:
+  $ref: ./account/getRecord.yaml
+/account/post:
+  $ref: ./account/postRecord.yaml
+/account/update:
+  $ref: ./account/updateRecord.yaml
+/account/delete/{deleted_id}:
+  $ref: ./account/deleteRecord.yaml
+
+# create/post/update category records
+/category/get:
+  $ref: ./category/getSubCategories.yaml
+/category/post/category:
+  $ref: ./category/postNewCategory.yaml
+/category/post/subcategory:
+  $ref: ./category/postNewSubCategory.yaml
+/category/update/category:
+  $ref: ./category/updateCategory.yaml
+/category/update/subcategory:
+  $ref: ./category/updateSubCategory.yaml

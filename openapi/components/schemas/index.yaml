@@ -1,3 +1,23 @@
 # test
 test.postDataRequest:
   $ref: ./test/postDataRequest.yaml
+
+# account
+account.getRecordResponse:
+  $ref: ./account/getRecordResponse.yaml
+account.postRecordRequest:
+  $ref: ./account/postRecordRequest.yaml
+account.updateRecordRequest:
+  $ref: ./account/updateRecordRequest.yaml
+
+# cateogry
+category.getSubCategoriesResponse:
+  $ref: ./category/getSubCategoriesResponse.yaml
+category.postNewCategoryRequest:
+  $ref: ./category/postNewCategoryRequest.yaml
+category.postNewSubCategoryRequest:
+  $ref: ./category/postNewSubCategoryRequest.yaml
+category.updateSubCategoryRequest:
+  $ref: ./category/updateSubCategoryRequest.yaml
+category.updateCategoryRequest:
+  $ref: ./category/updateCategoryRequest.yaml

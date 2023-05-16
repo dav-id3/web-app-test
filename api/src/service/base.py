@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Final, List, Optional, Tuple
 from sqlalchemy.orm import Session
 
-import src.schema.mysql as schema
+import src.schema.repository.mysql as schema
 from src.repository.mysql import Interface as repository
 from src.configuration import const
 

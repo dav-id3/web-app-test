@@ -1,0 +1,17 @@
+post:
+  tags:
+    - category
+  summary: post new sub category
+  description: post new sub category
+
+  requestBody:
+    description: a new sub category
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/category.postNewSubCategoryRequest"
+
+  responses:
+    201:
+      description: Created

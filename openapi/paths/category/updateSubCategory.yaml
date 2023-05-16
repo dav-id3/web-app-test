@@ -1,0 +1,17 @@
+put:
+  tags:
+    - category
+  summary: update subcategory name
+  description: update subcategory name
+
+  requestBody:
+    description: subcategory id and new subcategory name
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/category.updateSubCategoryRequest"
+
+  responses:
+    202:
+      description: Accepted

@@ -1,0 +1,13 @@
+get:
+  tags:
+    - category
+  summary: get all subcategory with their category name
+  description: get all subcategory name and id with their category name and id
+
+  responses:
+    200:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/category.getSubCategoriesResponse"

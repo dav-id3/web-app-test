@@ -8,7 +8,7 @@ from typing import List
 import src.dependency.injection as dep
 import src.service.base as service
 import src.repository.mysql as repository
-from src.schema import mysql as schema
+from src.schema.repository import mysql as schema
 
 router = APIRouter(prefix="/base")
 

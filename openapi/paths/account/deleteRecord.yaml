@@ -1,0 +1,17 @@
+delete:
+  tags:
+    - account
+  summary: get account record
+  description: get account record
+
+  parameters:
+    - in: path
+      name: deleted_id
+      required: true
+      schema:
+        type: string
+      description: deleted account id
+
+  responses:
+    204:
+      description: OK

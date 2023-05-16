@@ -10,7 +10,8 @@ from sqlalchemy.sql import text
 
 import src.model as model
 from src.configuration.env import ENV
-from src.schema import mysql as schema
+from src.schema.repository import mysql as mysqlschema
+from src.schema.service import category as categoryschema
 
 
 class Interface(metaclass=ABCMeta):
@@ -61,12 +62,100 @@ class Interface(metaclass=ABCMeta):
         return origin + pathname + qs
 
     @abstractmethod
-    def register_test_data(self, session: Session, req: List[schema.testData]) -> None:
+    def register_test_data(self, session: Session, req: List[mysqlschema.testData]) -> None:
         """
         register test data
 
         Args:
-            req(schema.testData): input data
+            req(mysqlschema.testData): input data
+        Returns:
+            None
+        """
+
+    @abstractmethod
+    def get_all_records(self, session: Session) -> List[mysqlschema.record]:
+        """
+        get all records
+
+        Args:
+            None
+        Returns:
+            List[mysqlschema.record]: all records
+        """
+
+    @abstractmethod
+    def post_record(self, session: Session, req: List[mysqlschema.record]) -> None:
+        """
+        post record
+
+        Args:
+            req (List[mysqlschema.record]): records
+        Returns:
+            None
+        """
+
+    @abstractmethod
+    def update_record(self, session: Session, req: mysqlschema.record) -> None:
+        """
+        update record
+
+        Args:
+            req (mysqlschema.record): record
+        Returns:
+            None
+        """
+
+    @abstractmethod
+    def delete_record(self, session: Session, deleted_id: int) -> None:
+        """
+        delete record
+
+        Args:
+            deleted_id (int): id of deleted record data
+        Returns:
+            None
+        """
+
+    @abstractmethod
+    def get_subcategories(self, session: Session) -> List[categoryschema.subcategory]:
+        """
+        get subcategories
+
+        Args:
+            None
+        Returns:
+            List[mysqlschema.subcategory]: subcategories
+        """
+
+    @abstractmethod
+    def get_categories(self, session: Session) -> List[categoryschema.category]:
+        """
+        get categories
+
+        Args:
+            None
+        Returns:
+            List[mysqlschema.subcategories]: categories
+        """
+
+    @abstractmethod
+    def update_category(self, session: Session, req: categoryschema.category) -> None:
+        """
+        update category
+
+        Args:
+            req (categoryschema.category): category
+        Returns:
+            None
+        """
+
+    @abstractmethod
+    def update_subcategory(self, session: Session, req: categoryschema.subcategory) -> None:
+        """
+        update subcategory
+
+        Args:
+            req (categoryschema.subcategory): subcategory
         Returns:
             None
         """
@@ -75,7 +164,7 @@ class Interface(metaclass=ABCMeta):
 class Repository(Interface):
     """class for dmysql repository"""
 
-    def register_test_data(self, session: Session, req: List[schema.testData]) -> None:
+    def register_test_data(self, session: Session, req: List[mysqlschema.testData]) -> None:
         sql = textwrap.dedent(
             f"""
             INSERT INTO
@@ -102,6 +191,246 @@ class Repository(Interface):
         try:
             session.execute(text(sql), prepared_statement)
             session.commit()
-        except sqlalchemy.exc.IntegrityError as err:
+        except sqlalchemy.exc.IntegrityError:
             session.rollback()
-            raise schema.InsertionDBError("mysql.register_test_data")
+            raise mysqlschema.InsertionDBError("mysql.register_test_data")
+
+    def get_all_records(self, session: Session) -> List[mysqlschema.record]:
+        sql = textwrap.dedent(
+            f"""
+            SELECT
+                `id`,
+                `name`,
+                `category`,
+                `sub_category`,
+                `amount`,
+                `description`,
+                `is_spending`,
+                `date`
+            FROM {model.Records.__tablename__}
+            """
+        )
+        try:
+            result = session.execute(text(sql))
+            session.commit()
+            return [mysqlschema.record(**dict(row)) for row in result]
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.SelectionDBError("mysql.get_all_records")
+
+    def post_record(self, session: Session, req: List[mysqlschema.record]) -> None:
+        sql = textwrap.dedent(
+            f"""
+            INSERT INTO
+                {model.Records.__tablename__}
+                (
+                    `id`,
+                    `name`,
+                    `category`,
+                    `sub_category`,
+                    `amount`,
+                    `description`,
+                    `is_spending`,
+                    `date`
+                )
+            VALUES
+                (
+                    :id,
+                    :name,
+                    :category,
+                    :sub_category,
+                    :amount,
+                    :description,
+                    :is_spending,
+                    :date
+                )
+            ON DUPLICATE KEY UPDATE
+                `name` = VALUES (`name`),
+                `category` = VALUES (`category`),
+                `sub_category` = VALUES (`sub_category`),
+                `amount` = VALUES (`amount`),
+                `description` = VALUES (`description`),
+                `is_spending` = VALUES (`is_spending`),
+                `date` = VALUES (`date`)
+            """
+        )
+        prepared_statement: List[Dict[str, any]] = []
+        for r in req:
+            state_dict = {}
+            state_dict["id"] = 0
+            state_dict["name"] = r.name
+            state_dict["category"] = r.category
+            state_dict["sub_category"] = r.sub_category
+            state_dict["amount"] = r.amount
+            state_dict["description"] = r.description
+            state_dict["is_spending"] = r.is_spending
+            state_dict["date"] = r.date
+            prepared_statement.append(state_dict)
+        try:
+            session.execute(text(sql), prepared_statement)
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.post_record")
+
+    def update_record(self, session: Session, req: mysqlschema.record) -> None:
+        sql = textwrap.dedent(
+            f"""
+            INSERT INTO
+                {model.Records.__tablename__}
+                (
+                    `id`,
+                    `name`,
+                    `category`,
+                    `sub_category`,
+                    `amount`,
+                    `description`,
+                    `is_spending`,
+                    `date`
+                )
+            VALUES
+                (
+                    {req.id},
+                    '{req.name}',
+                    '{req.category}',
+                    '{req.sub_category}',
+                    {req.amount},
+                    '{req.description}',
+                    {req.is_spending},
+                    '{req.date}'
+                )
+            ON DUPLICATE KEY UPDATE
+                `name` = VALUES (`name`),
+                `category` = VALUES (`category`),
+                `sub_category` = VALUES (`sub_category`),
+                `amount` = VALUES (`amount`),
+                `description` = VALUES (`description`),
+                `is_spending` = VALUES (`is_spending`),
+                `date` = VALUES (`date`)
+            """
+        )
+
+        try:
+            session.execute(text(sql))
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.update_record")
+
+    def delete_record(self, session: Session, deleted_id: int) -> None:
+        sql = textwrap.dedent(
+            f"""
+            DELETE FROM
+                {model.Records.__tablename__}
+            WHERE
+                id = {deleted_id}
+            """
+        )
+        try:
+            session.execute(text(sql))
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.delete_record")
+
+    def get_categories(self, session: Session) -> List[categoryschema.category]:
+        sql = textwrap.dedent(
+            f"""
+            SELECT
+                `id`,
+                `category`
+            FROM {model.Categories.__tablename__}
+            """
+        )
+        try:
+            result = session.execute(text(sql))
+            session.commit()
+            return [categoryschema.category(**dict(row)) for row in result]
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.SelectionDBError("mysql.get_categories")
+
+    def get_subcategories(self, session: Session) -> List[categoryschema.subcategory]:
+        sql = textwrap.dedent(
+            f"""
+            SELECT
+                `id`,
+                `subcategory`,
+                `category_id`
+            FROM {model.SubCategories.__tablename__}
+            """
+        )
+        try:
+            result = session.execute(text(sql))
+            session.commit()
+            # res: List[categoryschema.subcategory] = []
+            # for row in result:
+            #     print(row)
+            #     print(row.id)
+            #     print(row.subcategory)
+            #     print(row.category_id)
+
+            #     res.append(
+            #         categoryschema.subcategory(id=row.id, subcategory=row.subcategory, category_id=row.category_id)
+            #     )
+
+            # return res
+            return [categoryschema.subcategory(**dict(row)) for row in result]
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.SelectionDBError("mysql.get_subcategories")
+
+    def update_category(self, session: Session, req: categoryschema.category) -> None:
+        sql = textwrap.dedent(
+            f"""
+            INSERT INTO
+                {model.Categories.__tablename__}
+                (
+                    `id`,
+                    `category`,
+                )
+            VALUES
+                (
+                    {req.id},
+                    '{req.category}'
+                )
+            ON DUPLICATE KEY UPDATE
+                `category` = VALUES (`category`)
+            """
+        )
+
+        try:
+            session.execute(text(sql))
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.update_category")
+
+    def update_subcategory(self, session: Session, req: categoryschema.subcategory) -> None:
+        sql = textwrap.dedent(
+            f"""
+            INSERT INTO
+                {model.SubCategories.__tablename__}
+                (
+                    `id`,
+                    `subcategory`,
+                    `category_id`
+                )
+            VALUES
+                (
+                    {req.category_id},
+                    '{req.subcategory}'
+                    {req.category_id}
+                )
+            ON DUPLICATE KEY UPDATE
+                `subcategory` = VALUES (`subcategory`)
+                `category_id` = VALUES (`category_id`)
+            """
+        )
+
+        try:
+            session.execute(text(sql))
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.update_subcategory")
