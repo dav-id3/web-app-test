@@ -160,6 +160,28 @@ class Interface(metaclass=ABCMeta):
             None
         """
 
+    @abstractmethod
+    def delete_category(self, session: Session, deleted_id: int) -> None:
+        """
+        delete category
+
+        Args:
+            deleted_id (int): id of deleted category data
+        Returns:
+            None
+        """
+
+    @abstractmethod
+    def delete_subcategory(self, session: Session, deleted_id: int) -> None:
+        """
+        delete subcategory
+
+        Args:
+            deleted_id (int): id of deleted subcategory data
+        Returns:
+            None
+        """
+
 
 class Repository(Interface):
     """class for dmysql repository"""
@@ -201,8 +223,8 @@ class Repository(Interface):
             SELECT
                 `id`,
                 `name`,
-                `category`,
-                `sub_category`,
+                `category_id`,
+                `subcategory_id`,
                 `amount`,
                 `description`,
                 `is_spending`,
@@ -226,8 +248,8 @@ class Repository(Interface):
                 (
                     `id`,
                     `name`,
-                    `category`,
-                    `sub_category`,
+                    `category_id`,
+                    `subcategory_id`,
                     `amount`,
                     `description`,
                     `is_spending`,
@@ -237,8 +259,8 @@ class Repository(Interface):
                 (
                     :id,
                     :name,
-                    :category,
-                    :sub_category,
+                    :category_id,
+                    :subcategory_id,
                     :amount,
                     :description,
                     :is_spending,
@@ -246,8 +268,8 @@ class Repository(Interface):
                 )
             ON DUPLICATE KEY UPDATE
                 `name` = VALUES (`name`),
-                `category` = VALUES (`category`),
-                `sub_category` = VALUES (`sub_category`),
+                `category_id` = VALUES (`category_id`),
+                `subcategory_id` = VALUES (`subcategory_id`),
                 `amount` = VALUES (`amount`),
                 `description` = VALUES (`description`),
                 `is_spending` = VALUES (`is_spending`),
@@ -259,8 +281,8 @@ class Repository(Interface):
             state_dict = {}
             state_dict["id"] = 0
             state_dict["name"] = r.name
-            state_dict["category"] = r.category
-            state_dict["sub_category"] = r.sub_category
+            state_dict["category_id"] = r.category_id
+            state_dict["subcategory_id"] = r.subcategory_id
             state_dict["amount"] = r.amount
             state_dict["description"] = r.description
             state_dict["is_spending"] = r.is_spending
@@ -281,8 +303,8 @@ class Repository(Interface):
                 (
                     `id`,
                     `name`,
-                    `category`,
-                    `sub_category`,
+                    `category_id`,
+                    `subcategory_id`,
                     `amount`,
                     `description`,
                     `is_spending`,
@@ -290,28 +312,39 @@ class Repository(Interface):
                 )
             VALUES
                 (
-                    {req.id},
-                    '{req.name}',
-                    '{req.category}',
-                    '{req.sub_category}',
-                    {req.amount},
-                    '{req.description}',
-                    {req.is_spending},
-                    '{req.date}'
+                    :id,
+                    :name,
+                    :category_id,
+                    :subcategory_id,
+                    :amount,
+                    :description,
+                    :is_spending,
+                    :date
                 )
             ON DUPLICATE KEY UPDATE
                 `name` = VALUES (`name`),
-                `category` = VALUES (`category`),
-                `sub_category` = VALUES (`sub_category`),
+                `category_id` = VALUES (`category_id`),
+                `subcategory_id` = VALUES (`subcategory_id`),
                 `amount` = VALUES (`amount`),
                 `description` = VALUES (`description`),
                 `is_spending` = VALUES (`is_spending`),
                 `date` = VALUES (`date`)
             """
         )
+        prepared_statement: List[Dict[str, any]] = []
+        state_dict = {}
+        state_dict["id"] = req.id
+        state_dict["name"] = req.name
+        state_dict["category_id"] = req.category_id
+        state_dict["subcategory_id"] = req.subcategory_id
+        state_dict["amount"] = req.amount
+        state_dict["description"] = req.description
+        state_dict["is_spending"] = req.is_spending
+        state_dict["date"] = req.date
+        prepared_statement.append(state_dict)
 
         try:
-            session.execute(text(sql))
+            session.execute(text(sql), prepared_statement)
             session.commit()
         except sqlalchemy.exc.IntegrityError:
             session.rollback()
@@ -363,18 +396,6 @@ class Repository(Interface):
         try:
             result = session.execute(text(sql))
             session.commit()
-            # res: List[categoryschema.subcategory] = []
-            # for row in result:
-            #     print(row)
-            #     print(row.id)
-            #     print(row.subcategory)
-            #     print(row.category_id)
-
-            #     res.append(
-            #         categoryschema.subcategory(id=row.id, subcategory=row.subcategory, category_id=row.category_id)
-            #     )
-
-            # return res
             return [categoryschema.subcategory(**dict(row)) for row in result]
         except sqlalchemy.exc.IntegrityError:
             session.rollback()
@@ -387,7 +408,7 @@ class Repository(Interface):
                 {model.Categories.__tablename__}
                 (
                     `id`,
-                    `category`,
+                    `category`
                 )
             VALUES
                 (
@@ -418,12 +439,12 @@ class Repository(Interface):
                 )
             VALUES
                 (
-                    {req.category_id},
-                    '{req.subcategory}'
+                    {req.id},
+                    '{req.subcategory}',
                     {req.category_id}
                 )
             ON DUPLICATE KEY UPDATE
-                `subcategory` = VALUES (`subcategory`)
+                `subcategory` = VALUES (`subcategory`),
                 `category_id` = VALUES (`category_id`)
             """
         )
@@ -434,3 +455,35 @@ class Repository(Interface):
         except sqlalchemy.exc.IntegrityError:
             session.rollback()
             raise mysqlschema.InsertionDBError("mysql.update_subcategory")
+
+    def delete_category(self, session: Session, deleted_id: int) -> None:
+        sql = textwrap.dedent(
+            f"""
+            DELETE FROM
+                {model.Categories.__tablename__}
+            WHERE
+                id = {deleted_id}
+            """
+        )
+        try:
+            session.execute(text(sql))
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.delete_category")
+
+    def delete_subcategory(self, session: Session, deleted_id: int) -> None:
+        sql = textwrap.dedent(
+            f"""
+            DELETE FROM
+                {model.SubCategories.__tablename__}
+            WHERE
+                id = {deleted_id}
+            """
+        )
+        try:
+            session.execute(text(sql))
+            session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            session.rollback()
+            raise mysqlschema.InsertionDBError("mysql.delete_subcategory")

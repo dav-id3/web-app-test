@@ -12,18 +12,25 @@ import {
   Grid,
 } from "@mui/material";
 import { EditRecordWindow } from "./EditRecordWindow";
+import { Subcategory } from "../../../api/type";
 
 const SPACING_HEIGHT = 10;
 
 interface RecordListProps {
-  records: AccountGetRecordResponseResponse[]; // 家計簿レコードの配列を受け取るProps
+  records: AccountGetRecordResponseResponse[];
   setIsRecordsToBeUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+  categoryDict: { [categoryId: number]: string };
+  subCategoryDict: { [categoryId: number]: Subcategory[] };
 }
 
-export const RecordList = (
-  { records, setIsRecordsToBeUpdated }: RecordListProps // Propsを受け取る
-) => {
+export const RecordList = ({
+  records,
+  setIsRecordsToBeUpdated,
+  categoryDict,
+  subCategoryDict,
+}: RecordListProps) => {
   const [selectedId, setSelectedId] = React.useState<number | null>(null);
+
   // 日付をフォーマットするための関数
   const dateToDay = (date: string) => {
     const d = new Date(date);
@@ -58,16 +65,21 @@ export const RecordList = (
             onClick={(event) => setSelectedId(record.id)}
           >
             <Grid container alignItems="center" spacing={1}>
-              <Grid item xs={3} style={{ textAlign: "left" }}>
-                {record.category}
+              <Grid item xs={4.5} style={{ textAlign: "left" }}>
+                {categoryDict[record.category_id]}
                 <Typography
                   variant="caption"
                   sx={{ display: "block", fontSize: 9 }}
                 >
-                  {record.sub_category}
+                  {record.subcategory_id == null
+                    ? null
+                    : subCategoryDict[record.category_id].filter(
+                        (subCategoryObj) =>
+                          subCategoryObj.id === record.subcategory_id
+                      )[0].subcategory}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4.5}>
                 {record.name}
               </Grid>
               {record.is_spending ? (
@@ -163,6 +175,8 @@ export const RecordList = (
         setIsRecordsToBeUpdated={setIsRecordsToBeUpdated}
         setSelectedId={setSelectedId}
         selectedRecord={records.find((record) => record.id === selectedId)}
+        categoryDict={categoryDict}
+        subCategoryDict={subCategoryDict}
       />
     </div>
   );

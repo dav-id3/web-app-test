@@ -9,10 +9,11 @@ properties:
           type: integer
         name:
           type: string
-        category:
-          type: string
-        sub_category:
-          type: string
+        category_id:
+          type: integer
+        subcategory_id:
+          type: integer
+          nullable: true
         amount:
           type: integer
         description:
@@ -25,8 +26,8 @@ properties:
       required:
         - id
         - name
-        - category
-        - sub_category
+        - category_id
+        - subcategory_id
         - amount
         - description
         - is_spending
@@ -37,16 +38,16 @@ example:
   response:
     - id: 1
       name: "book"
-      category: "book"
-      sub_category: "book"
+      category_id: 1
+      subcategory_id: 1
       amount: 1000
       description: "book"
       is_spending: true
       date: "2020-01-01"
     - id: 2
       name: "fish"
-      category: "food"
-      sub_category: "fish"
+      category_id: 1
+      subcategory_id: 2
       amount: 1000
       description: "fish"
       is_spending: true

@@ -1,3 +1,8 @@
 import { AccountGetRecordResponseResponse } from "../api/generated/api";
 
-export type { AccountGetRecordResponseResponse };
+interface Subcategory {
+  id: number;
+  subcategory: string;
+}
+
+export type { AccountGetRecordResponseResponse, Subcategory };

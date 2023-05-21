@@ -4,10 +4,11 @@ properties:
     type: integer
   name:
     type: string
-  category:
-    type: string
-  sub_category:
-    type: string
+  category_id:
+    type: integer
+  subcategory_id:
+    type: integer
+    nullable: true
   amount:
     type: integer
   description:
@@ -20,8 +21,8 @@ properties:
 required:
   - id
   - name
-  - category
-  - sub_category
+  - category_id
+  - subcategory_id
   - amount
   - description
   - is_spending

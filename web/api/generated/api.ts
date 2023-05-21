@@ -54,16 +54,16 @@ export interface AccountGetRecordResponseResponse {
     'name': string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof AccountGetRecordResponseResponse
      */
-    'category': string;
+    'category_id': number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof AccountGetRecordResponseResponse
      */
-    'sub_category': string;
+    'subcategory_id': number | null;
     /**
      * 
      * @type {number}
@@ -109,16 +109,16 @@ export interface AccountUpdateRecordRequest {
     'name': string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof AccountUpdateRecordRequest
      */
-    'category': string;
+    'category_id': number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof AccountUpdateRecordRequest
      */
-    'sub_category': string;
+    'subcategory_id': number | null;
     /**
      * 
      * @type {number}
@@ -243,7 +243,7 @@ export interface CategoryPostNewSubCategoryRequest {
      * @type {number}
      * @memberof CategoryPostNewSubCategoryRequest
      */
-    'cotegory_id'?: number;
+    'category_id': number;
 }
 /**
  * 
@@ -281,7 +281,7 @@ export interface CategoryUpdateSubCategoryRequest {
      * @type {string}
      * @memberof CategoryUpdateSubCategoryRequest
      */
-    'sub_category': string;
+    'subcategory': string;
     /**
      * 
      * @type {number}
@@ -632,6 +632,74 @@ export class AccountApi extends BaseAPI {
 export const CategoryApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * delete category
+         * @summary delete category
+         * @param {string} deletedId deleted category id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryDeleteCategoryDeletedIdDelete: async (deletedId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deletedId' is not null or undefined
+            assertParamExists('categoryDeleteCategoryDeletedIdDelete', 'deletedId', deletedId)
+            const localVarPath = `/category/delete/category/{deleted_id}`
+                .replace(`{${"deleted_id"}}`, encodeURIComponent(String(deletedId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * delete subcategory
+         * @summary delete subcategory
+         * @param {string} deletedId deleted subcategory id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryDeleteSubcategoryDeletedIdDelete: async (deletedId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deletedId' is not null or undefined
+            assertParamExists('categoryDeleteSubcategoryDeletedIdDelete', 'deletedId', deletedId)
+            const localVarPath = `/category/delete/subcategory/{deleted_id}`
+                .replace(`{${"deleted_id"}}`, encodeURIComponent(String(deletedId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * get all subcategory name and id with their category name and id
          * @summary get all subcategory with their category name
          * @param {*} [options] Override http request option.
@@ -816,6 +884,28 @@ export const CategoryApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CategoryApiAxiosParamCreator(configuration)
     return {
         /**
+         * delete category
+         * @summary delete category
+         * @param {string} deletedId deleted category id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryDeleteCategoryDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryDeleteCategoryDeletedIdDelete(deletedId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * delete subcategory
+         * @summary delete subcategory
+         * @param {string} deletedId deleted subcategory id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async categoryDeleteSubcategoryDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.categoryDeleteSubcategoryDeletedIdDelete(deletedId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * get all subcategory name and id with their category name and id
          * @summary get all subcategory with their category name
          * @param {*} [options] Override http request option.
@@ -880,6 +970,26 @@ export const CategoryApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = CategoryApiFp(configuration)
     return {
         /**
+         * delete category
+         * @summary delete category
+         * @param {string} deletedId deleted category id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryDeleteCategoryDeletedIdDelete(deletedId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.categoryDeleteCategoryDeletedIdDelete(deletedId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * delete subcategory
+         * @summary delete subcategory
+         * @param {string} deletedId deleted subcategory id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        categoryDeleteSubcategoryDeletedIdDelete(deletedId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.categoryDeleteSubcategoryDeletedIdDelete(deletedId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * get all subcategory name and id with their category name and id
          * @summary get all subcategory with their category name
          * @param {*} [options] Override http request option.
@@ -938,6 +1048,30 @@ export const CategoryApiFactory = function (configuration?: Configuration, baseP
  * @extends {BaseAPI}
  */
 export class CategoryApi extends BaseAPI {
+    /**
+     * delete category
+     * @summary delete category
+     * @param {string} deletedId deleted category id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryDeleteCategoryDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryDeleteCategoryDeletedIdDelete(deletedId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * delete subcategory
+     * @summary delete subcategory
+     * @param {string} deletedId deleted subcategory id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CategoryApi
+     */
+    public categoryDeleteSubcategoryDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig) {
+        return CategoryApiFp(this.configuration).categoryDeleteSubcategoryDeletedIdDelete(deletedId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * get all subcategory name and id with their category name and id
      * @summary get all subcategory with their category name

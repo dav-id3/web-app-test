@@ -37,7 +37,7 @@ async def post_new_category(
     return Response(status_code=status.HTTP_201_CREATED)
 
 
-@router.post("/post/subcategy", status_code=status.HTTP_201_CREATED)
+@router.post("/post/subcategory", status_code=status.HTTP_201_CREATED)
 async def post_new_subcategory(
     req: svcschema.subcategory,
     *,
@@ -76,14 +76,36 @@ async def update_subcategory(
     return Response(status_code=status.HTTP_202_ACCEPTED)
 
 
-# @router.delete("/delete/{deleted_id}", status_code=status.HTTP_204_NO_CONTENT)
-# async def delete_record(
-#     deleted_id: int,
-#     *,
-#     db: Session = Depends(dep.mysqlrep.get_session),
-#     svc: service.Interface = Depends(dep.accountsvc),
-#     rep: repository.Interface = Depends(dep.mysqlrep),
-# ) -> Response:
-#     """post record"""
-#     svc.delete_record(db, rep, deleted_id)
-#     return Response(status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/delete/category/{deleted_id}", status_code=status.HTTP_202_ACCEPTED)
+async def delete_category(
+    deleted_id: int,
+    *,
+    db: Session = Depends(dep.mysqlrep.get_session),
+    svc: service.Interface = Depends(dep.categorysvc),
+    rep: repository.Interface = Depends(dep.mysqlrep),
+) -> Response:
+    """delete category"""
+
+    subcategories_list = svc.get_subcategories(db, rep)
+    for subcategories in subcategories_list:
+        if subcategories.category_id == deleted_id:
+            for subcategory in subcategories.subcategories:
+                print(subcategory)
+                svc.delete_subcategory(db, rep, subcategory.id)
+
+    svc.delete_category(db, rep, deleted_id)
+
+    return Response(status_code=status.HTTP_202_ACCEPTED)
+
+
+@router.delete("/delete/subcategory/{deleted_id}", status_code=status.HTTP_202_ACCEPTED)
+async def delete_subcategory(
+    deleted_id: int,
+    *,
+    db: Session = Depends(dep.mysqlrep.get_session),
+    svc: service.Interface = Depends(dep.categorysvc),
+    rep: repository.Interface = Depends(dep.mysqlrep),
+) -> Response:
+    """delete subcategory"""
+    svc.delete_subcategory(db, rep, deleted_id)
+    return Response(status_code=status.HTTP_202_ACCEPTED)

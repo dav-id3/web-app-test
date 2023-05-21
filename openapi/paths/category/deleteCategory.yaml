@@ -1,0 +1,17 @@
+delete:
+  tags:
+    - category
+  summary: delete category
+  description: delete category
+
+  parameters:
+    - in: path
+      name: deleted_id
+      required: true
+      schema:
+        type: string
+      description: deleted category id
+
+  responses:
+    202:
+      description: Accepted

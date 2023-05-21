@@ -23,10 +23,10 @@ def upgrade() -> None:
         TABLE_NAME,
         sa.Column('id', sa.Integer, primary_key=True, index=True, autoincrement=True),
         sa.Column('name', sa.String(length=15), nullable=False),
-        sa.Column('category', sa.String(length=15), nullable=False),
-        sa.Column('sub_category', sa.String(length=15), nullable=False),
+        sa.Column('category_id', sa.Integer, nullable=False),
+        sa.Column('subcategory_id', sa.Integer, nullable=True),
         sa.Column('amount', sa.Integer, nullable=False),
-        sa.Column('description', sa.String(length=15), nullable=False),
+        sa.Column('description', sa.String(length=15), nullable=True),
         sa.Column('is_spending', sa.Boolean, nullable=False),
         sa.Column('date', sa.String(length=15), nullable=False),
     )
