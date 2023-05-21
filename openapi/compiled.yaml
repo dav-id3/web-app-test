@@ -157,6 +157,38 @@ paths:
       responses:
         '202':
           description: Accepted
+  '/category/delete/category/{deleted_id}':
+    delete:
+      tags:
+        - category
+      summary: delete category
+      description: delete category
+      parameters:
+        - in: path
+          name: deleted_id
+          required: true
+          schema:
+            type: string
+          description: deleted category id
+      responses:
+        '202':
+          description: Accepted
+  '/category/delete/subcategory/{deleted_id}':
+    delete:
+      tags:
+        - category
+      summary: delete subcategory
+      description: delete subcategory
+      parameters:
+        - in: path
+          name: deleted_id
+          required: true
+          schema:
+            type: string
+          description: deleted subcategory id
+      responses:
+        '202':
+          description: Accepted
 components:
   schemas:
     test.postDataRequest:
@@ -193,10 +225,11 @@ components:
                 type: integer
               name:
                 type: string
-              category:
-                type: string
-              sub_category:
-                type: string
+              category_id:
+                type: integer
+              subcategory_id:
+                type: integer
+                nullable: true
               amount:
                 type: integer
               description:
@@ -209,8 +242,8 @@ components:
             required:
               - id
               - name
-              - category
-              - sub_category
+              - category_id
+              - subcategory_id
               - amount
               - description
               - is_spending
@@ -221,16 +254,16 @@ components:
         response:
           - id: 1
             name: book
-            category: book
-            sub_category: book
+            category_id: 1
+            subcategory_id: 1
             amount: 1000
             description: book
             is_spending: true
             date: '2020-01-01'
           - id: 2
             name: fish
-            category: food
-            sub_category: fish
+            category_id: 1
+            subcategory_id: 2
             amount: 1000
             description: fish
             is_spending: true
@@ -242,10 +275,11 @@ components:
         properties:
           name:
             type: string
-          category:
-            type: string
-          sub_category:
-            type: string
+          category_id:
+            type: integer
+          subcategory_id:
+            type: integer
+            nullable: true
           amount:
             type: integer
           description:
@@ -257,8 +291,8 @@ components:
             format: date
         required:
           - name
-          - category
-          - sub_category
+          - category_id
+          - subcategory_id
           - amount
           - description
           - is_spending
@@ -270,10 +304,11 @@ components:
           type: integer
         name:
           type: string
-        category:
-          type: string
-        sub_category:
-          type: string
+        category_id:
+          type: integer
+        subcategory_id:
+          type: integer
+          nullable: true
         amount:
           type: integer
         description:
@@ -286,8 +321,8 @@ components:
       required:
         - id
         - name
-        - category
-        - sub_category
+        - category_id
+        - subcategory_id
         - amount
         - description
         - is_spending
@@ -339,7 +374,7 @@ components:
           type: integer
         subcategory:
           type: string
-        cotegory_id:
+        category_id:
           type: integer
       required:
         - id
@@ -350,13 +385,13 @@ components:
       properties:
         id:
           type: integer
-        sub_category:
+        subcategory:
           type: string
         category_id:
           type: integer
       required:
         - id
-        - sub_category
+        - subcategory
         - category_id
     category.updateCategoryRequest:
       type: object

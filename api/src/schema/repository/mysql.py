@@ -1,5 +1,6 @@
 """schema for mysql"""
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class InsertionDBError(Exception):
@@ -17,24 +18,9 @@ class record(BaseModel):
 
     id: int = Field(..., description="id")
     name: str = Field(..., description="name")
-    category: str = Field(..., description="category")
-    sub_category: str = Field(..., description="sub_category")
+    category_id: int = Field(..., description="category id")
+    subcategory_id: Optional[int] = Field(None, description="subcategory id")
     amount: int = Field(..., description="amount")
     description: str = Field(..., description="description")
     is_spending: bool = Field(..., description="is_spending")
     date: str = Field(..., description="date")
-
-
-class subcategory(BaseModel):
-    """subcategory data"""
-
-    id: int = Field(..., description="id")
-    sub_category: str = Field(..., description="sub_category")
-    category_id: int = Field(..., description="id")
-
-
-class category(BaseModel):
-    """category data"""
-
-    id: int = Field(..., description="id")
-    category: str = Field(..., description="sub_category")

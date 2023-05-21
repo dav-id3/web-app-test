@@ -23,3 +23,7 @@
   $ref: ./category/updateCategory.yaml
 /category/update/subcategory:
   $ref: ./category/updateSubCategory.yaml
+/category/delete/category/{deleted_id}:
+  $ref: ./category/deleteCategory.yaml
+/category/delete/subcategory/{deleted_id}:
+  $ref: ./category/deleteSubCategory.yaml

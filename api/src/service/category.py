@@ -68,6 +68,26 @@ class Interface(metaclass=ABCMeta):
           None
         """
 
+    @abstractmethod
+    def delete_category(self, db: Session, rep: repository, deleted_id: int) -> None:
+        """
+        delete category
+        Args:
+          deleted_id (int): id of deleted category
+        Returns:
+          None
+        """
+
+    @abstractmethod
+    def delete_subcategory(self, db: Session, rep: repository, deleted_id: int) -> None:
+        """
+        delete subcategory
+        Args:
+          deleted_id (int): id of deleted subcateogry
+        Returns:
+          None
+        """
+
 
 class Service(Interface):
     """class for category service"""
@@ -88,7 +108,6 @@ class Service(Interface):
                     ],
                 )
             )
-        print(subcategories)
         return res_subcategories
 
     def post_new_category(self, db: Session, rep: repository, req: svcschema.category) -> None:
@@ -97,8 +116,8 @@ class Service(Interface):
         rep.update_category(
             db,
             svcschema.category(
-                category_id=0,
-                category_name=req.category,
+                id=0,
+                category=req.category,
             ),
         )
 
@@ -108,9 +127,9 @@ class Service(Interface):
         rep.update_subcategory(
             db,
             svcschema.subcategory(
-                subcategory_id=0,
+                id=0,
+                subcategory=req.subcategory,
                 category_id=req.category_id,
-                subcategory_name=req.subcategory,
             ),
         )
 
@@ -119,3 +138,9 @@ class Service(Interface):
 
     def update_subcategory(self, db: Session, rep: repository, req: svcschema.subcategory) -> None:
         rep.update_subcategory(db, req)
+
+    def delete_category(self, db: Session, rep: repository, deleted_id: int) -> None:
+        rep.delete_category(db, deleted_id)
+
+    def delete_subcategory(self, db: Session, rep: repository, deleted_id: int) -> None:
+        rep.delete_subcategory(db, deleted_id)

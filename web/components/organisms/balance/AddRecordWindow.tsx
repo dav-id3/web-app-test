@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
-import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogActions,
@@ -12,7 +11,9 @@ import {
 } from "@mui/material";
 import { MyDatePicker } from "../../atoms";
 import { FixedButton } from "../../molecules";
-import { AccountApiClient } from "../../../api";
+import { AccountApiClient, CategoryApiClient } from "../../../api";
+import { Subcategory } from "../../../api/type";
+import { truncate } from "fs/promises";
 const styles = {
   buttonContainer: {
     position: "fixed",
@@ -22,63 +23,104 @@ const styles = {
   },
 };
 
-const testCategories = ["食費", "日用品", "交通費", "交際費", "趣味", "衣服"];
-const testSubCategories: { [key: string]: string[] } = {
-  食費: ["食費", "外食", "食料品"],
-  日用品: ["日用品", "雑貨"],
-  交通費: ["交通費", "ガソリン"],
-  交際費: ["交際費", "飲み会", "食事"],
-  趣味: ["趣味", "ゲーム", "映画"],
-  衣服: ["衣服", "服"],
-};
-
 interface AddRecordWindowProps {
   setIsRecordsToBeUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+  categoryDict: { [categoryId: number]: string };
+  subCategoryDict: { [categoryId: number]: Subcategory[] };
 }
 
 export const AddRecordWindow = ({
   setIsRecordsToBeUpdated,
+  categoryDict,
+  subCategoryDict,
 }: AddRecordWindowProps) => {
   const [open, setOpen] = useState(false);
+
   const [date, setDate] = useState<Date>(new Date());
-  const [category, setCategory] = useState<string>();
-  const [subCategory, setSubCategory] = useState<string>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>();
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<number>();
   const [name, setName] = useState<string>();
   const [amount, setAmount] = useState<number>();
+
+  const [selectedCategoryIdMissingError, setSelectedCategoryIdMissingError] =
+    useState<boolean>(false);
+  const [
+    selectedSubCategoryIdMissingError,
+    setSelectedSubCategoryIdMissingError,
+  ] = useState<boolean>(false);
+  const [nameValidationError, setNameValidationError] =
+    useState<boolean>(false);
+  const [amountMissingError, setAmountMissingError] = useState<boolean>(false);
+
   const resetRecord = () => {
     setDate(new Date());
-    setCategory(undefined);
-    setSubCategory(undefined);
+    setSelectedCategoryId(undefined);
+    setSelectedSubCategoryId(undefined);
     setName(undefined);
     setAmount(undefined);
   };
+  const resetValidation = () => {
+    setSelectedCategoryIdMissingError(false);
+    setSelectedSubCategoryIdMissingError(false);
+    setNameValidationError(false);
+    setAmountMissingError(false);
+  };
   const handleClose = () => {
     resetRecord();
+    resetValidation();
     setOpen(false);
   };
-  const handleSaveRecord = async () => {
-    try {
-      const response = await AccountApiClient.accountPostPost([
-        {
-          id: 0,
-          name: name,
-          category: category,
-          sub_category: subCategory,
-          amount: amount,
-          description: "",
-          is_spending: true,
-          date: `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(
-            -2
-          )}-${("0" + date.getDate()).slice(-2)}`,
-        },
-      ]);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+
+  const saveRecord = async () => {
+    resetValidation();
+    let isOKToAdd = true;
+    if (selectedCategoryId === undefined) {
+      setSelectedCategoryIdMissingError(true);
+      isOKToAdd = false;
     }
-    resetRecord();
-    setIsRecordsToBeUpdated(true);
-    setOpen(false);
+    if (
+      selectedSubCategoryId === undefined &&
+      selectedCategoryId !== undefined &&
+      subCategoryDict[selectedCategoryId].length !== 0
+    ) {
+      setSelectedSubCategoryIdMissingError(true);
+      isOKToAdd = false;
+    }
+    if (name === undefined || name.length > 15) {
+      setNameValidationError(true);
+      isOKToAdd = false;
+    }
+    if (amount === undefined) {
+      setAmountMissingError(true);
+      isOKToAdd = false;
+    }
+    if (isOKToAdd) {
+      try {
+        const response = await AccountApiClient.accountPostPost([
+          {
+            id: 0,
+            name: name,
+            category_id: selectedCategoryId,
+            subcategory_id:
+              selectedSubCategoryId !== undefined
+                ? selectedSubCategoryId
+                : null,
+            amount: amount,
+            description: "",
+            is_spending: true,
+            date: `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(
+              -2
+            )}-${("0" + date.getDate()).slice(-2)}`,
+          },
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
+      resetRecord();
+      resetValidation();
+      setIsRecordsToBeUpdated(true);
+      setOpen(false);
+    }
   };
 
   return (
@@ -91,42 +133,79 @@ export const AddRecordWindow = ({
             <MyDatePicker displayedDate={date} setDate={setDate} />
           </Box>
           <TextField
+            error={selectedCategoryIdMissingError}
             select
             label="Category"
-            value={category}
-            onChange={(event) => {
-              setCategory(event.target.value);
-            }}
+            value={
+              selectedCategoryId !== undefined
+                ? categoryDict[selectedCategoryId]
+                : ""
+            }
             variant="outlined"
             margin="dense"
             fullWidth
           >
-            {testCategories.map((option, index) => (
-              <MenuItem key={index} value={option}>
-                {option}
+            {Object.entries(categoryDict).map(([categoryId, categoryName]) => (
+              <MenuItem
+                key={categoryId}
+                value={categoryName}
+                onClick={() => {
+                  setSelectedCategoryId(Number(categoryId));
+                  setSelectedSubCategoryId(undefined);
+                }}
+              >
+                {categoryName}
               </MenuItem>
             ))}
           </TextField>
-          {category !== undefined ? (
-            <TextField
-              select
-              label="Sub category"
-              value={subCategory}
-              onChange={(event) => {
-                setSubCategory(event.target.value);
-              }}
-              variant="outlined"
-              margin="dense"
-              fullWidth
-            >
-              {testSubCategories[category].map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
+          {selectedCategoryId !== undefined ? (
+            subCategoryDict[selectedCategoryId].length > 0 ? (
+              <TextField
+                error={selectedSubCategoryIdMissingError}
+                select
+                label="Sub category"
+                value={
+                  selectedSubCategoryId !== undefined
+                    ? subCategoryDict[selectedCategoryId].filter(
+                        (subCategoryObj) =>
+                          subCategoryObj.id === selectedSubCategoryId
+                      )[0].subcategory
+                    : ""
+                }
+                variant="outlined"
+                margin="dense"
+                fullWidth
+              >
+                {subCategoryDict[selectedCategoryId].map(
+                  (subCategoryObj, index) => (
+                    <MenuItem
+                      key={subCategoryObj.id}
+                      value={subCategoryObj.subcategory}
+                      onClick={() => {
+                        setSelectedSubCategoryId(subCategoryObj.id);
+                      }}
+                    >
+                      {subCategoryObj.subcategory}
+                    </MenuItem>
+                  )
+                )}
+              </TextField>
+            ) : (
+              <TextField
+                label="Sub category"
+                helperText="No sub category needed"
+                value={""}
+                variant="outlined"
+                InputProps={{
+                  readOnly: true,
+                }}
+                margin="dense"
+                fullWidth
+              />
+            )
           ) : (
             <TextField
+              error={selectedSubCategoryIdMissingError}
               label="Sub category"
               value={""}
               variant="outlined"
@@ -138,6 +217,12 @@ export const AddRecordWindow = ({
             />
           )}
           <TextField
+            error={nameValidationError}
+            helperText={
+              name !== undefined && name.length > 15
+                ? "Length must be less than 15 characters"
+                : ""
+            }
             margin="dense"
             label="Name"
             value={name}
@@ -147,6 +232,7 @@ export const AddRecordWindow = ({
             }}
           />
           <TextField
+            error={amountMissingError}
             margin="dense"
             label="Amount"
             type="number"
@@ -159,7 +245,7 @@ export const AddRecordWindow = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSaveRecord}>Add</Button>
+          <Button onClick={saveRecord}>Add</Button>
         </DialogActions>
       </Dialog>
     </div>
