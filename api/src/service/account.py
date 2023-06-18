@@ -16,6 +16,15 @@ class Interface(metaclass=ABCMeta):
     def __call__(self):
         return self
 
+    def is_same_record(self, record_a: schema.record, record_b: schema.record) -> bool:
+        return (
+            record_a.name == record_b.name
+            and record_a.category_id == record_b.category_id
+            and record_a.subcategory_id == record_b.subcategory_id
+            and record_a.is_spending == record_b.is_spending
+            and record_a.repeat_frequency == record_b.repeat_frequency
+        )
+
     @abstractmethod
     def get_all_records(self, db: Session, rep: repository) -> List[schema.record]:
         """
@@ -56,6 +65,16 @@ class Interface(metaclass=ABCMeta):
           None
         """
 
+    @abstractmethod
+    def delete_repeatation(self, db: Session, rep: repository, deleted_id: int) -> None:
+        """
+        delete repeatation record to db
+        Args:
+          deleted_id (int): id of deleted record data
+        Returns:
+          None
+        """
+
 
 class Service(Interface):
     """class for account service"""
@@ -71,3 +90,12 @@ class Service(Interface):
 
     def delete_record(self, db: Session, rep: repository, deleted_id: int) -> None:
         rep.delete_record(db, deleted_id)
+
+    def delete_repeatation(self, db: Session, rep: repository, deleted_id: int) -> None:
+        records = rep.get_all_records(db)
+        deleted_record = list(filter(lambda x: x.id == deleted_id, records))[0]
+
+        for record in records:
+            if self.is_same_record(record, deleted_record):
+                record.repeat_frequency = None
+                rep.update_record(db, record)

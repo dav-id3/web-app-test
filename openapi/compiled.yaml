@@ -79,7 +79,29 @@ paths:
           description: deleted account id
       responses:
         '204':
-          description: OK
+          description: Success
+  '/account/delete_regular/{deleted_id}/{is_repeatation_deleted}':
+    delete:
+      tags:
+        - account
+      summary: delete regular record
+      description: delete regular record
+      parameters:
+        - in: path
+          name: deleted_id
+          required: true
+          schema:
+            type: string
+          description: deleted account id
+        - in: path
+          name: is_repeatation_deleted
+          required: true
+          schema:
+            type: boolean
+          description: whether repeatation is deleted or not
+      responses:
+        '204':
+          description: Success
   /category/get:
     get:
       tags:
@@ -236,9 +258,14 @@ components:
                 type: string
               is_spending:
                 type: boolean
+              repeat_frequency:
+                type: string
+                nullable: true
               date:
                 type: string
                 format: date
+              is_deleted:
+                type: boolean
             required:
               - id
               - name
@@ -247,7 +274,9 @@ components:
               - amount
               - description
               - is_spending
+              - repeat_frequency
               - date
+              - is_deleted
       required:
         - response
       example:
@@ -259,7 +288,9 @@ components:
             amount: 1000
             description: book
             is_spending: true
+            repeat_frequency: monthly
             date: '2020-01-01'
+            is_deleted: false
           - id: 2
             name: fish
             category_id: 1
@@ -267,7 +298,9 @@ components:
             amount: 1000
             description: fish
             is_spending: true
+            repeat_frequency: null
             date: '2020-01-01'
+            is_deleted: false
     account.postRecordRequest:
       type: array
       items:
@@ -286,9 +319,14 @@ components:
             type: string
           is_spending:
             type: boolean
+          repeat_frequency:
+            type: string
+            nullable: true
           date:
             type: string
             format: date
+          is_deleted:
+            type: boolean
         required:
           - name
           - category_id
@@ -296,7 +334,9 @@ components:
           - amount
           - description
           - is_spending
+          - repeat_frequency
           - date
+          - is_deleted
     account.updateRecordRequest:
       type: object
       properties:
@@ -315,9 +355,14 @@ components:
           type: string
         is_spending:
           type: boolean
+        repeat_frequency:
+          type: string
+          nullable: true
         date:
           type: string
           format: date
+        is_deleted:
+          type: boolean
       required:
         - id
         - name
@@ -326,7 +371,9 @@ components:
         - amount
         - description
         - is_spending
+        - repeat_frequency
         - date
+        - is_deleted
     category.getSubCategoriesResponse:
       type: object
       properties:

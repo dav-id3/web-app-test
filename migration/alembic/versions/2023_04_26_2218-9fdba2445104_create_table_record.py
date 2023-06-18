@@ -28,7 +28,14 @@ def upgrade() -> None:
         sa.Column('amount', sa.Integer, nullable=False),
         sa.Column('description', sa.String(length=15), nullable=True),
         sa.Column('is_spending', sa.Boolean, nullable=False),
+        sa.Column(
+            'repeat_frequency',
+            sa.String(length=15),
+            nullable=True,
+            comment="frequency of repeated record in {daily, weekly, monthly, None}",
+        ),
         sa.Column('date', sa.String(length=15), nullable=False),
+        sa.Column('is_deleted', sa.Boolean, nullable=False),
     )
     pass
 

@@ -16,7 +16,7 @@ const CateoryTable: NextPage = (): JSX.Element => {
     <>
       <Head title="Household account note" />
       <Header />
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <CategoryList />
         </Grid>

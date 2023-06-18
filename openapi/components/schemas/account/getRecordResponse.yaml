@@ -20,9 +20,14 @@ properties:
           type: string
         is_spending:
           type: boolean
+        repeat_frequency:
+          type: string
+          nullable: true
         date:
           type: string
           format: date
+        is_deleted:
+          type: boolean
       required:
         - id
         - name
@@ -31,7 +36,9 @@ properties:
         - amount
         - description
         - is_spending
+        - repeat_frequency
         - date
+        - is_deleted
 required:
   - response
 example:
@@ -43,7 +50,9 @@ example:
       amount: 1000
       description: "book"
       is_spending: true
+      repeat_frequency: "monthly"
       date: "2020-01-01"
+      is_deleted: false
     - id: 2
       name: "fish"
       category_id: 1
@@ -51,4 +60,6 @@ example:
       amount: 1000
       description: "fish"
       is_spending: true
+      repeat_frequency: null
       date: "2020-01-01"
+      is_deleted: false
