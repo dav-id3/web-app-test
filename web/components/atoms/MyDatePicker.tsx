@@ -15,7 +15,6 @@ export const MyDatePicker = ({ displayedDate, setDate }: MyDatePickerProps) => {
       <DatePicker
         value={dayjs(displayedDate)}
         onChange={(newValue) => {
-          console.log(newValue?.toDate());
           setDate(newValue?.toDate() as Date);
         }}
       />

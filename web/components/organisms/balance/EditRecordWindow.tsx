@@ -13,6 +13,7 @@ import { MyDatePicker } from "../../atoms";
 import { AccountApiClient, CategoryApiClient } from "../../../api";
 import { AccountGetRecordResponseResponse } from "../../../api/type";
 import { Subcategory } from "../../../api/type";
+import { ConfirmDeleteRecordWindow } from "../../organisms";
 
 interface EditRecordWindowProps {
   setIsRecordsToBeUpdated: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,6 +31,7 @@ export const EditRecordWindow = ({
   subCategoryDict,
 }: EditRecordWindowProps) => {
   const [open, setOpen] = useState(false);
+  const [openConfirmDeleteWindow, setOpenConfirmDeleteWindow] = useState(false);
 
   const [date, setDate] = useState<Date>(new Date());
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>();
@@ -101,32 +103,35 @@ export const EditRecordWindow = ({
           amount: amount!,
           description: "",
           is_spending: true,
+          repeat_frequency: selectedRecord!.repeat_frequency,
           date: `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(
             -2
           )}-${("0" + date.getDate()).slice(-2)}`,
+          is_deleted: false,
         });
       } catch (error) {
         console.log(error);
       }
-      resetRecord();
-      setOpen(false);
-      setSelectedId(null);
-      setIsRecordsToBeUpdated(true);
+      handleClose();
     }
   };
   const handleDeleteRecord = async () => {
-    try {
-      if (selectedRecord === undefined) return;
-      const response = await AccountApiClient.accountDeleteDeletedIdDelete(
-        selectedRecord.id.toString()
-      );
-    } catch (error) {
-      console.log(error);
+    if (
+      selectedRecord !== undefined &&
+      selectedRecord.repeat_frequency !== null
+    ) {
+      setOpenConfirmDeleteWindow(true);
+    } else {
+      try {
+        if (selectedRecord === undefined) return;
+        const response = await AccountApiClient.accountDeleteDeletedIdDelete(
+          selectedRecord.id.toString()
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      handleClose();
     }
-    resetRecord();
-    setOpen(false);
-    setSelectedId(null);
-    setIsRecordsToBeUpdated(true);
   };
   useEffect(() => {
     if (selectedRecord !== undefined) {
@@ -272,6 +277,12 @@ export const EditRecordWindow = ({
           </DialogActions>
         </Dialog>
       )}
+      <ConfirmDeleteRecordWindow
+        open={openConfirmDeleteWindow}
+        setOpen={setOpenConfirmDeleteWindow}
+        selectedRecord={selectedRecord}
+        handleClose={handleClose}
+      />
     </div>
   );
 };

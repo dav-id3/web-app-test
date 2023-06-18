@@ -29,6 +29,7 @@ const Balance: NextPage = (): JSX.Element => {
 
   const getRecords = async () => {
     const { data } = await AccountApiClient.accountGetGet();
+    console.log(data.response);
     setRecords(data.response);
   };
   const getCategories = async () => {

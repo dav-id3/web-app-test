@@ -87,7 +87,19 @@ export interface AccountGetRecordResponseResponse {
      * @type {string}
      * @memberof AccountGetRecordResponseResponse
      */
+    'repeat_frequency': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountGetRecordResponseResponse
+     */
     'date': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AccountGetRecordResponseResponse
+     */
+    'is_deleted': boolean;
 }
 /**
  * 
@@ -142,7 +154,19 @@ export interface AccountUpdateRecordRequest {
      * @type {string}
      * @memberof AccountUpdateRecordRequest
      */
+    'repeat_frequency': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountUpdateRecordRequest
+     */
     'date': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AccountUpdateRecordRequest
+     */
+    'is_deleted': boolean;
 }
 /**
  * 
@@ -363,6 +387,44 @@ export const AccountApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * delete regular record
+         * @summary delete regular record
+         * @param {string} deletedId deleted account id
+         * @param {boolean} isRepeatationDeleted whether repeatation is deleted or not
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountDeleteRegularDeletedIdIsRepeatationDeletedDelete: async (deletedId: string, isRepeatationDeleted: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deletedId' is not null or undefined
+            assertParamExists('accountDeleteRegularDeletedIdIsRepeatationDeletedDelete', 'deletedId', deletedId)
+            // verify required parameter 'isRepeatationDeleted' is not null or undefined
+            assertParamExists('accountDeleteRegularDeletedIdIsRepeatationDeletedDelete', 'isRepeatationDeleted', isRepeatationDeleted)
+            const localVarPath = `/account/delete_regular/{deleted_id}/{is_repeatation_deleted}`
+                .replace(`{${"deleted_id"}}`, encodeURIComponent(String(deletedId)))
+                .replace(`{${"is_repeatation_deleted"}}`, encodeURIComponent(String(isRepeatationDeleted)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * get account record
          * @summary get account record
          * @param {*} [options] Override http request option.
@@ -486,6 +548,18 @@ export const AccountApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * delete regular record
+         * @summary delete regular record
+         * @param {string} deletedId deleted account id
+         * @param {boolean} isRepeatationDeleted whether repeatation is deleted or not
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountDeleteRegularDeletedIdIsRepeatationDeletedDelete(deletedId: string, isRepeatationDeleted: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountDeleteRegularDeletedIdIsRepeatationDeletedDelete(deletedId, isRepeatationDeleted, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * get account record
          * @summary get account record
          * @param {*} [options] Override http request option.
@@ -538,6 +612,17 @@ export const AccountApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.accountDeleteDeletedIdDelete(deletedId, options).then((request) => request(axios, basePath));
         },
         /**
+         * delete regular record
+         * @summary delete regular record
+         * @param {string} deletedId deleted account id
+         * @param {boolean} isRepeatationDeleted whether repeatation is deleted or not
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountDeleteRegularDeletedIdIsRepeatationDeletedDelete(deletedId: string, isRepeatationDeleted: boolean, options?: any): AxiosPromise<void> {
+            return localVarFp.accountDeleteRegularDeletedIdIsRepeatationDeletedDelete(deletedId, isRepeatationDeleted, options).then((request) => request(axios, basePath));
+        },
+        /**
          * get account record
          * @summary get account record
          * @param {*} [options] Override http request option.
@@ -586,6 +671,19 @@ export class AccountApi extends BaseAPI {
      */
     public accountDeleteDeletedIdDelete(deletedId: string, options?: AxiosRequestConfig) {
         return AccountApiFp(this.configuration).accountDeleteDeletedIdDelete(deletedId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * delete regular record
+     * @summary delete regular record
+     * @param {string} deletedId deleted account id
+     * @param {boolean} isRepeatationDeleted whether repeatation is deleted or not
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountApi
+     */
+    public accountDeleteRegularDeletedIdIsRepeatationDeletedDelete(deletedId: string, isRepeatationDeleted: boolean, options?: AxiosRequestConfig) {
+        return AccountApiFp(this.configuration).accountDeleteRegularDeletedIdIsRepeatationDeletedDelete(deletedId, isRepeatationDeleted, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

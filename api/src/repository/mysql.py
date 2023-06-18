@@ -228,14 +228,34 @@ class Repository(Interface):
                 `amount`,
                 `description`,
                 `is_spending`,
-                `date`
+                `repeat_frequency`,
+                `date`,
+                `is_deleted`
             FROM {model.Records.__tablename__}
+            ORDER BY `date` DESC
             """
         )
         try:
             result = session.execute(text(sql))
             session.commit()
-            return [mysqlschema.record(**dict(row)) for row in result]
+            res = []
+            for row in result:
+                row_dict = dict(row)
+                res.append(
+                    mysqlschema.record(
+                        id=row_dict["id"],
+                        name=row_dict["name"],
+                        category_id=row_dict["category_id"],
+                        subcategory_id=row_dict["subcategory_id"],
+                        amount=row_dict["amount"],
+                        description=row_dict["description"],
+                        is_spending=row_dict["is_spending"],
+                        repeat_frequency=row_dict["repeat_frequency"],
+                        date=row_dict["date"],
+                        is_deleted=row_dict["is_deleted"],
+                    )
+                )
+            return res
         except sqlalchemy.exc.IntegrityError:
             session.rollback()
             raise mysqlschema.SelectionDBError("mysql.get_all_records")
@@ -253,7 +273,9 @@ class Repository(Interface):
                     `amount`,
                     `description`,
                     `is_spending`,
-                    `date`
+                    `repeat_frequency`,
+                    `date`,
+                    `is_deleted`
                 )
             VALUES
                 (
@@ -264,7 +286,9 @@ class Repository(Interface):
                     :amount,
                     :description,
                     :is_spending,
-                    :date
+                    :repeat_frequency,
+                    :date,
+                    :is_deleted
                 )
             ON DUPLICATE KEY UPDATE
                 `name` = VALUES (`name`),
@@ -273,7 +297,9 @@ class Repository(Interface):
                 `amount` = VALUES (`amount`),
                 `description` = VALUES (`description`),
                 `is_spending` = VALUES (`is_spending`),
-                `date` = VALUES (`date`)
+                `repeat_frequency` = VALUES (`repeat_frequency`),
+                `date` = VALUES (`date`),
+                `is_deleted` = VALUES (`is_deleted`)
             """
         )
         prepared_statement: List[Dict[str, any]] = []
@@ -286,7 +312,9 @@ class Repository(Interface):
             state_dict["amount"] = r.amount
             state_dict["description"] = r.description
             state_dict["is_spending"] = r.is_spending
+            state_dict["repeat_frequency"] = r.repeat_frequency
             state_dict["date"] = r.date
+            state_dict["is_deleted"] = r.is_deleted
             prepared_statement.append(state_dict)
         try:
             session.execute(text(sql), prepared_statement)
@@ -308,7 +336,9 @@ class Repository(Interface):
                     `amount`,
                     `description`,
                     `is_spending`,
-                    `date`
+                    `repeat_frequency`,
+                    `date`,
+                    `is_deleted`
                 )
             VALUES
                 (
@@ -319,7 +349,9 @@ class Repository(Interface):
                     :amount,
                     :description,
                     :is_spending,
-                    :date
+                    :repeat_frequency,
+                    :date,
+                    :is_deleted
                 )
             ON DUPLICATE KEY UPDATE
                 `name` = VALUES (`name`),
@@ -328,7 +360,9 @@ class Repository(Interface):
                 `amount` = VALUES (`amount`),
                 `description` = VALUES (`description`),
                 `is_spending` = VALUES (`is_spending`),
-                `date` = VALUES (`date`)
+                `repeat_frequency` = VALUES (`repeat_frequency`),
+                `date` = VALUES (`date`),
+                `is_deleted` = VALUES (`is_deleted`)
             """
         )
         prepared_statement: List[Dict[str, any]] = []
@@ -340,7 +374,9 @@ class Repository(Interface):
         state_dict["amount"] = req.amount
         state_dict["description"] = req.description
         state_dict["is_spending"] = req.is_spending
+        state_dict["repeat_frequency"] = req.repeat_frequency
         state_dict["date"] = req.date
+        state_dict["is_deleted"] = req.is_deleted
         prepared_statement.append(state_dict)
 
         try:
@@ -353,8 +389,10 @@ class Repository(Interface):
     def delete_record(self, session: Session, deleted_id: int) -> None:
         sql = textwrap.dedent(
             f"""
-            DELETE FROM
+            UPDATE
                 {model.Records.__tablename__}
+            SET
+                is_deleted = 1
             WHERE
                 id = {deleted_id}
             """

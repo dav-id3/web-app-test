@@ -1,0 +1,23 @@
+delete:
+  tags:
+    - account
+  summary: delete regular record
+  description: delete regular record
+
+  parameters:
+    - in: path
+      name: deleted_id
+      required: true
+      schema:
+        type: string
+      description: deleted account id
+    - in: path
+      name: is_repeatation_deleted
+      required: true
+      schema:
+        type: boolean
+      description: whether repeatation is deleted or not
+
+  responses:
+    204:
+      description: Success

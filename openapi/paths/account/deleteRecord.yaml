@@ -14,4 +14,4 @@ delete:
 
   responses:
     204:
-      description: OK
+      description: Success

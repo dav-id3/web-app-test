@@ -11,6 +11,8 @@
   $ref: ./account/updateRecord.yaml
 /account/delete/{deleted_id}:
   $ref: ./account/deleteRecord.yaml
+/account/delete_regular/{deleted_id}/{is_repeatation_deleted}:
+  $ref: ./account/deleteRegularRecord.yaml
 
 # create/post/update category records
 /category/get:
